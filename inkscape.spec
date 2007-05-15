@@ -1,6 +1,6 @@
 %define	name	inkscape
-%define version 0.45
-%define	rel	2
+%define version 0.45.1
+%define	rel	1
 %define release %mkrel %{rel}
 
 Name:		inkscape
@@ -10,7 +10,7 @@ Release:	%{release}
 License:	GPL
 Group:		Graphics
 URL:		http://inkscape.sourceforge.net/
-Source:		http://prdownloads.sourceforge.net/%{name}/%{name}-%{version}.tar.bz2
+Source:		http://prdownloads.sourceforge.net/%{name}/%{name}-%{version}.tar.gz
 Source1:	%{name}-icons.tar.bz2
 Patch0:		inkscape-0.45-python_gcc412.patch
 Patch1:		inkscape-CVE-2007-1463_1464.patch
