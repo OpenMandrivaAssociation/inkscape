@@ -13,7 +13,6 @@ URL:		http://inkscape.sourceforge.net/
 Source:		http://prdownloads.sourceforge.net/%{name}/%{name}-%{version}.tar.gz
 Source1:	%{name}-icons.tar.bz2
 Patch0:		inkscape-0.45-python_gcc412.patch
-Patch1:		inkscape-CVE-2007-1463_1464.patch
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 BuildRequires:  png-devel
 BuildRequires:  libxml2-devel >= 2.6.0
@@ -47,7 +46,6 @@ tool for web designers and as an interchange format for desktop publishing.
 %prep
 %setup -q -a1
 %patch0 -p1
-%patch1 -p1
 
 sed -i 's/gc_libs=""/gc_libs="-lpthread -ldl"/' configure
 
