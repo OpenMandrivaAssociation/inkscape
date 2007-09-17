@@ -31,7 +31,7 @@ BuildRequires:  perl-devel
 BuildRequires:  loudmouth-devel
 BuildRequires:	expat-devel
 BuildRequires:	desktop-file-utils
-BuildRequires:	liblcms-devel
+BuildRequires:	lcms-devel
 BuildRequires:	dbus-glib-devel
 BuildRequires:	autoconf2.5 automake
 BuildRequires:	intltool
