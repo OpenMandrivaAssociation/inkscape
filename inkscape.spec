@@ -1,6 +1,6 @@
 %define	name	inkscape
 %define version 0.45.1
-%define	rel	3
+%define	rel	4
 %define release %mkrel %{rel}
 
 Name:		inkscape
@@ -14,6 +14,7 @@ Source:		http://prdownloads.sourceforge.net/%{name}/%{name}-%{version}.tar.gz
 Source1:	%{name}-icons.tar.bz2
 Patch0:		inkscape-0.45-python_gcc412.patch
 Patch1:		inkscape-0.45.1-autotools.patch
+Patch2:		inkscape-0.45.1-sigc.patch
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 BuildRequires:  png-devel
 BuildRequires:  libxml2-devel >= 2.6.0
@@ -48,10 +49,12 @@ tool for web designers and as an interchange format for desktop publishing.
 %setup -q -a1
 %patch0 -p1
 %patch1 -p1 -b .autotools
+%patch2 -p0 -b .sigc
 
 sed -i 's/gc_libs=""/gc_libs="-lpthread -ldl"/' configure
 
 %build
+intltoolize --force
 aclocal
 automake
 autoconf
@@ -84,6 +87,7 @@ EOF
 desktop-file-install --vendor="" \
   --remove-category="Application" \
   --add-category="X-Mandriva-Multimedia-Graphics" \
+  --add-category="X-MandrivaLinux-CrossDesktop" \
   --dir $RPM_BUILD_ROOT%{_datadir}/applications $RPM_BUILD_ROOT%{_datadir}/applications/*
 
 # icons
