@@ -84,6 +84,8 @@ command="%{name}" \
 xdg="true"
 EOF
 
+sed -i -e s/inkscape.png/inkscape/ $RPM_BUILD_ROOT%{_datadir}/applications/*
+
 desktop-file-install --vendor="" \
   --remove-category="Application" \
   --add-category="X-Mandriva-Multimedia-Graphics" \
