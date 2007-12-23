@@ -1,13 +1,13 @@
 %define	name	inkscape
 %define version 0.45.1
-%define	rel	4
+%define	rel	5
 %define release %mkrel %{rel}
 
 Name:		inkscape
 Summary:	A vector-based drawing program using SVG
 Version:	%{version}
 Release:	%{release}
-License:	GPL
+License:	GPLv2+
 Group:		Graphics
 URL:		http://inkscape.sourceforge.net/
 Source:		http://prdownloads.sourceforge.net/%{name}/%{name}-%{version}.tar.gz
@@ -73,21 +73,10 @@ rm -rf %{buildroot}
 %makeinstall_std
 
 # Menu support
-install -d %{buildroot}%{_menudir}/ 
-cat > %{buildroot}%{_menudir}/%{name} << EOF
-?package(%{name}): needs=x11 \
-icon="%{name}.png" \
-section="Multimedia/Graphics" \
-title=Inkscape longtitle="Vector graphics editor" \
-command="%{name}" \
-xdg="true"
-EOF
-
 sed -i -e s/inkscape.png/inkscape/ $RPM_BUILD_ROOT%{_datadir}/applications/*
 
 desktop-file-install --vendor="" \
   --remove-category="Application" \
-  --add-category="X-Mandriva-Multimedia-Graphics" \
   --add-category="X-MandrivaLinux-CrossDesktop" \
   --dir $RPM_BUILD_ROOT%{_datadir}/applications $RPM_BUILD_ROOT%{_datadir}/applications/*
 
@@ -122,10 +111,6 @@ rm -rf %{buildroot}
 #%{_libdir}/inkscape
 %{_mandir}/man1/*
 %{_mandir}/*/man1/*
-
-%{_menudir}/%{name}
 %{_iconsdir}/*.png
 %{_miconsdir}/*.png
 %{_liconsdir}/*.png
-
-
