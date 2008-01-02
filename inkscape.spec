@@ -15,6 +15,7 @@ Source1:	%{name}-icons.tar.bz2
 Patch0:		inkscape-0.45-python_gcc412.patch
 Patch1:		inkscape-0.45.1-autotools.patch
 Patch2:		inkscape-0.45.1-sigc.patch
+BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 BuildRequires:  png-devel
 BuildRequires:  libxml2-devel >= 2.6.0
 BuildRequires:	libgc-devel >= 6.4
