@@ -15,6 +15,7 @@ Source1:	%{name}-icons.tar.bz2
 Patch0:		inkscape-0.45-python_gcc412.patch
 Patch1:		inkscape-0.45.1-autotools.patch
 Patch2:		inkscape-0.45.1-sigc.patch
+Patch3:		20_fix_glib_and_gxx43_ftbfs.dpatch
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 BuildRequires:  png-devel
 BuildRequires:  libxml2-devel >= 2.6.0
@@ -50,7 +51,7 @@ tool for web designers and as an interchange format for desktop publishing.
 %patch0 -p1
 %patch1 -p1 -b .autotools
 %patch2 -p0 -b .sigc
-
+%patch3 -p0
 sed -i 's/gc_libs=""/gc_libs="-lpthread -ldl"/' configure
 
 %build
