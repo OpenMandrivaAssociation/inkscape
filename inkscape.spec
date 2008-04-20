@@ -1,6 +1,6 @@
 %define	name	inkscape
 %define version 0.46
-%define	rel	1
+%define	rel	2
 %define release %mkrel %{rel}
 
 Name:		inkscape
@@ -33,6 +33,9 @@ BuildRequires:	dbus-glib-devel
 BuildRequires:	autoconf2.5 automake
 BuildRequires:	intltool
 BuildRequires:	boost-devel
+BuildRequires:	libpoppler-glib-devel
+BuildRequires:	cairo-devel
+BuildRequires:	libwpg-devel
 Requires: python-pyxml
 Requires(post):	desktop-file-utils
 Requires(postun): desktop-file-utils
