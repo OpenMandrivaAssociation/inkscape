@@ -32,6 +32,7 @@ BuildRequires:	lcms-devel
 BuildRequires:	dbus-glib-devel
 BuildRequires:	autoconf2.5 automake
 BuildRequires:	intltool
+BuildRequires:	boost-devel
 Requires: python-pyxml
 Requires(post):	desktop-file-utils
 Requires(postun): desktop-file-utils
