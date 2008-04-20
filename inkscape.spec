@@ -1,6 +1,6 @@
 %define	name	inkscape
-%define version 0.45.1
-%define	rel	5
+%define version 0.46
+%define	rel	1
 %define release %mkrel %{rel}
 
 Name:		inkscape
@@ -12,10 +12,6 @@ Group:		Graphics
 URL:		http://inkscape.sourceforge.net/
 Source:		http://prdownloads.sourceforge.net/%{name}/%{name}-%{version}.tar.gz
 Source1:	%{name}-icons.tar.bz2
-Patch0:		inkscape-0.45-python_gcc412.patch
-Patch1:		inkscape-0.45.1-autotools.patch
-Patch2:		inkscape-0.45.1-sigc.patch
-Patch3:		20_fix_glib_and_gxx43_ftbfs.dpatch
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 BuildRequires:  png-devel
 BuildRequires:  libxml2-devel >= 2.6.0
@@ -48,11 +44,9 @@ tool for web designers and as an interchange format for desktop publishing.
 
 %prep
 %setup -q -a1
-%patch0 -p1
-%patch1 -p1 -b .autotools
-%patch2 -p0 -b .sigc
-%patch3 -p0
 sed -i 's/gc_libs=""/gc_libs="-lpthread -ldl"/' configure
+cd src/extension/script/CXX
+ln -s ../CXX/ CXX
 
 %build
 intltoolize --force
