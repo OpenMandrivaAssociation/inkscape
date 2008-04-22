@@ -1,6 +1,6 @@
 %define	name	inkscape
 %define version 0.46
-%define	rel	2
+%define	rel	3
 %define release %mkrel %{rel}
 
 Name:		inkscape
@@ -36,7 +36,7 @@ BuildRequires:	boost-devel
 BuildRequires:	libpoppler-glib-devel
 BuildRequires:	cairo-devel
 BuildRequires:	libwpg-devel
-Requires: python-pyxml
+Requires: python-pyxml, python-lxml
 Requires(post):	desktop-file-utils
 Requires(postun): desktop-file-utils
 
