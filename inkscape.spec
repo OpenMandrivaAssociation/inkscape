@@ -1,6 +1,6 @@
 %define	name	inkscape
 %define version 0.46
-%define	rel	3
+%define	rel	4
 %define release %mkrel %{rel}
 
 Name:		inkscape
@@ -36,6 +36,7 @@ BuildRequires:	boost-devel
 BuildRequires:	libpoppler-glib-devel
 BuildRequires:	cairo-devel
 BuildRequires:	libwpg-devel
+BuildRequires:	imagemagick-devel
 Requires: python-pyxml, python-lxml
 Requires(post):	desktop-file-utils
 Requires(postun): desktop-file-utils
@@ -57,6 +58,8 @@ intltoolize --force
 aclocal
 automake
 autoconf
+CPPFLAGS="`Magick++-config --cppflags`"
+export CPPFLAGS
 %configure2_5x \
 	--disable-static \
 	--with-python \
