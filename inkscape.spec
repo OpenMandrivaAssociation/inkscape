@@ -12,6 +12,15 @@ Group:		Graphics
 URL:		http://inkscape.sourceforge.net/
 Source:		http://prdownloads.sourceforge.net/%{name}/%{name}-%{version}.tar.gz
 Source1:	%{name}-icons.tar.bz2
+# http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=487623
+Patch0:		inkscape-0.46-zh_CN-locale-crash.patch
+# http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=488170
+Patch1:		inkscape-0.46-poppler-0.8.3.patch
+# Fedora patches
+Patch2: 	inkscape-0.46-cxxinclude.patch
+Patch3: 	inkscape-0.46-gtk2.13.3.patch
+Patch4:		inkscape-0.46-gtkopen.patch
+
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 BuildRequires:  png-devel
 BuildRequires:  libxml2-devel >= 2.6.0
@@ -49,6 +58,11 @@ tool for web designers and as an interchange format for desktop publishing.
 
 %prep
 %setup -q -a1
+%patch0 -p1 -b .zh_CN-locale-crash
+%patch1 -p1 -b .poppler
+%patch2 -p1 -b .cxxinclude
+%patch3 -p1 -b .gtk2.13.3
+%patch4 -p0 -b .gtkopen
 sed -i 's/gc_libs=""/gc_libs="-lpthread -ldl"/' configure
 cd src/extension/script/CXX
 ln -s ../CXX/ CXX
