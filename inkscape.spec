@@ -1,6 +1,6 @@
 %define	name	inkscape
 %define version 0.46
-%define	rel	5
+%define	rel	6
 %define release %mkrel %{rel}
 
 Name:		inkscape
