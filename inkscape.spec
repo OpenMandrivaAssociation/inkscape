@@ -1,6 +1,6 @@
 %define	name	inkscape
 %define version 0.46
-%define	rel	7
+%define	rel	8
 %define release %mkrel %{rel}
 
 Name:		inkscape
@@ -20,6 +20,13 @@ Patch1:		inkscape-0.46-poppler-0.8.3.patch
 Patch2: 	inkscape-0.46-cxxinclude.patch
 Patch3: 	inkscape-0.46-gtk2.13.3.patch
 Patch4:		inkscape-0.46-gtkopen.patch
+Patch5:		inkscape-0.46-desktop.patch
+# use uniconvertor to import coreldraw cdr files (not applied yet)
+Patch6:		inkscape-0.46-uniconv.patch
+# Ubuntu patch, fixes libMagick++ detection
+Patch7:		inkscape-0.46-imagemagick.patch
+# Frugalware patch, fixes building perl support with perl 5.10
+Patch8:		inkscape-0.46-perl-5.10.patch
 
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 BuildRequires:  png-devel
@@ -49,6 +56,7 @@ BuildRequires:	imagemagick-devel
 Requires: python-pyxml, python-lxml
 Requires(post):	desktop-file-utils
 Requires(postun): desktop-file-utils
+#Suggests:	uniconvertor
 
 %description
 Inkscape is a SVG based generic vector-drawing program.
@@ -63,6 +71,14 @@ tool for web designers and as an interchange format for desktop publishing.
 %patch2 -p1 -b .cxxinclude
 %patch3 -p1 -b .gtk2.13.3
 %patch4 -p0 -b .gtkopen
+%patch5 -p1 -b .desktop
+# disabled for now, it does not seem to work
+# once this is working again, also the suggests on uniconvertor
+# should be uncommented
+#%patch6 -p1 -b .uniconv
+%patch7 -p2 -b .imagemagick
+%patch8 -p1 -b .perl5.10
+
 sed -i 's/gc_libs=""/gc_libs="-lpthread -ldl"/' configure
 cd src/extension/script/CXX
 ln -s ../CXX/ CXX
@@ -77,12 +93,10 @@ export CPPFLAGS
 %configure2_5x \
 	--disable-static \
 	--with-python \
+	--with-perl \
     	--enable-inkboard \
     	--disable-mmx \
 	--with-gnome-print
-#(peroyvind) for some weird reason -lpopt will be converted to /usr/lib/libpopt.so
-# during build, hardcode real path in stead
-perl -pi -e "s#-lpopt#%{_libdir}/libpopt.so#g" src/Makefile
 %make
 
 %install
@@ -90,20 +104,17 @@ rm -rf %{buildroot}
 %makeinstall_std
 
 # Menu support
-sed -i -e s/inkscape.png/inkscape/ $RPM_BUILD_ROOT%{_datadir}/applications/*
+sed -i -e s/inkscape.png/inkscape/ %{buildroot}%{_datadir}/applications/*
 
 desktop-file-install --vendor="" \
   --remove-category="Application" \
   --add-category="X-MandrivaLinux-CrossDesktop" \
-  --dir $RPM_BUILD_ROOT%{_datadir}/applications $RPM_BUILD_ROOT%{_datadir}/applications/*
+  --dir %{buildroot}%{_datadir}/applications %{buildroot}%{_datadir}/applications/*
 
 # icons
 install -D -m 644 %{name}-48.png %{buildroot}/%_liconsdir/%{name}.png
 install -D -m 644 %{name}-32.png %{buildroot}/%_iconsdir/%{name}.png
 install -D -m 644 %{name}-16.png %{buildroot}/%_miconsdir/%{name}.png
-
-# remove .la files
-rm -f %{buildroot}/%{_libdir}/inkscape/plugins/*.la
 
 %find_lang %{name}
 
