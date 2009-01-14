@@ -1,3 +1,5 @@
+%define Werror_cflags %nil
+
 %define	name	inkscape
 %define version 0.46
 %define	rel	9
