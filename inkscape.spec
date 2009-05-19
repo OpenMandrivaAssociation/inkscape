@@ -32,6 +32,8 @@ Patch8:		inkscape-0.46-perl-5.10.patch
 Patch9:		inkscape-0.46-fix-makefile.patch
 # Ubuntu patch, fix gtk adjustment bugs
 Patch10:	102_gtk_zero_pagesize.dpatch
+# Gentoo patch
+Patch11:	inkscape-0.46-gcc4.4.patch
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 BuildRequires:  png-devel
 BuildRequires:  libxml2-devel >= 2.6.0
@@ -84,6 +86,7 @@ tool for web designers and as an interchange format for desktop publishing.
 %patch8 -p1 -b .perl5.10
 %patch9 -p1
 %patch10 -p1
+%patch11 -p1 -b .gcc4.4
 
 sed -i 's/gc_libs=""/gc_libs="-lpthread -ldl"/' configure
 cd src/extension/script/CXX
@@ -97,12 +100,10 @@ autoconf
 CPPFLAGS="`Magick++-config --cppflags`"
 export CPPFLAGS
 %configure2_5x \
-	--disable-static \
 	--with-python \
 	--with-perl \
     	--enable-inkboard \
-    	--disable-mmx \
-	--with-gnome-print
+    	--disable-mmx
 %make
 
 %install
