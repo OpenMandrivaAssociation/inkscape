@@ -1,8 +1,9 @@
 %define Werror_cflags %nil
 
 %define	name	inkscape
-%define version 0.46
-%define rel	13
+%define version 0.47
+%define pre	pre2
+%define rel	0.%pre.1
 %define release %mkrel %{rel}
 
 Name:		inkscape
@@ -12,28 +13,12 @@ Release:	%{release}
 License:	GPLv2+
 Group:		Graphics
 URL:		http://inkscape.sourceforge.net/
-Source:		http://prdownloads.sourceforge.net/%{name}/%{name}-%{version}.tar.gz
+Source:		http://prdownloads.sourceforge.net/%{name}/%{name}-%{version}%{pre}.tar.bz2
 Source1:	%{name}-icons.tar.bz2
-# http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=487623
-Patch0:		inkscape-0.46-zh_CN-locale-crash.patch
-# http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=488170
-Patch1:		inkscape-0.46-poppler-0.8.3.patch
 # Fedora patches
 Patch2: 	inkscape-0.46-cxxinclude.patch
-Patch3: 	inkscape-0.46-gtk2.13.3.patch
-Patch4:		inkscape-0.46-gtkopen.patch
-Patch5:		inkscape-0.46-desktop.patch
 # use uniconvertor to import coreldraw cdr files (not applied yet)
 Patch6:		inkscape-0.46-uniconv.patch
-# Ubuntu patch, fixes libMagick++ detection
-Patch7:		inkscape-0.46-imagemagick.patch
-# Frugalware patch, fixes building perl support with perl 5.10
-Patch8:		inkscape-0.46-perl-5.10.patch
-Patch9:		inkscape-0.46-fix-makefile.patch
-# Ubuntu patch, fix gtk adjustment bugs
-Patch10:	102_gtk_zero_pagesize.dpatch
-# Gentoo patch
-Patch11:	inkscape-0.46-gcc4.4.patch
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 BuildRequires:  png-devel
 BuildRequires:  libxml2-devel >= 2.6.0
@@ -59,6 +44,7 @@ BuildRequires:	libpoppler-glib-devel
 BuildRequires:	cairo-devel
 BuildRequires:	libwpg-devel
 BuildRequires:	imagemagick-devel
+BuildRequires:	gsl-devel
 Requires: python-pyxml, python-lxml
 Requires(post):	desktop-file-utils
 Requires(postun): desktop-file-utils
@@ -71,26 +57,12 @@ Inkscape uses W3C SVG as its native file format. It is therefore a very useful
 tool for web designers and as an interchange format for desktop publishing.
 
 %prep
-%setup -q -a1
-%patch0 -p1 -b .zh_CN-locale-crash
-%patch1 -p1 -b .poppler
+%setup -q -a1 -n %name-%version%pre
 %patch2 -p1 -b .cxxinclude
-%patch3 -p1 -b .gtk2.13.3
-%patch4 -p0 -b .gtkopen
-%patch5 -p1 -b .desktop
 # disabled for now, it does not seem to work
 # once this is working again, also the suggests on uniconvertor
 # should be uncommented
 #%patch6 -p1 -b .uniconv
-%patch7 -p2 -b .imagemagick
-%patch8 -p1 -b .perl5.10
-%patch9 -p1
-%patch10 -p1
-%patch11 -p1 -b .gcc4.4
-
-sed -i 's/gc_libs=""/gc_libs="-lpthread -ldl"/' configure
-cd src/extension/script/CXX
-ln -s ../CXX/ CXX
 
 %build
 intltoolize --force
