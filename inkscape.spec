@@ -2,7 +2,7 @@
 
 %define	name	inkscape
 %define version 0.47
-%define pre	pre2
+%define pre	pre3
 %define rel	0.%pre.1
 %define release %mkrel %{rel}
 
