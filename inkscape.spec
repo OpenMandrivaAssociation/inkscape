@@ -20,6 +20,8 @@ Source1:	%{name}-icons.tar.bz2
 Patch2: 	inkscape-0.46-cxxinclude.patch
 # use uniconvertor to import coreldraw cdr files (not applied yet)
 Patch6:		inkscape-0.46-uniconv.patch
+# Fix build with poppler 0.12.2
+Patch7:		inkscape-poppler-0.12.2.patch
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 BuildRequires:  png-devel
 BuildRequires:  libxml2-devel >= 2.6.0
@@ -64,6 +66,7 @@ tool for web designers and as an interchange format for desktop publishing.
 # once this is working again, also the suggests on uniconvertor
 # should be uncommented
 #%patch6 -p1 -b .uniconv
+%patch7 -p1 -b .poppler0.12.2
 
 %build
 intltoolize --force
