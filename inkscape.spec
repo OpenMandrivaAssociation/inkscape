@@ -54,10 +54,11 @@ Requires(postun): desktop-file-utils
 #Suggests:	uniconvertor
 
 %description
-Inkscape is a SVG based generic vector-drawing program.
+Inkscape is a generic SVG-based vector-drawing program.
 
-Inkscape uses W3C SVG as its native file format. It is therefore a very useful
-tool for web designers and as an interchange format for desktop publishing.
+Inkscape uses the W3C SVG (= "Scalable Vector Graphics") standard as its
+native file format. Therefore, it is a very useful tool for web designers
+and can be used as an interchange format for desktop publishing.
 
 %prep
 %setup -q -a1 -n %name-%version%pre
