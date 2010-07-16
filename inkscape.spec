@@ -46,6 +46,7 @@ BuildRequires:	boost-devel
 BuildRequires:	libpoppler-glib-devel
 BuildRequires:	cairo-devel
 BuildRequires:	libwpg-devel
+BuildRequires:	popt-devel
 BuildRequires:	imagemagick-devel
 BuildRequires:	gsl-devel
 Requires: python-pyxml, python-lxml
@@ -79,7 +80,6 @@ export CPPFLAGS
 %configure2_5x \
 	--with-python \
 	--with-perl \
-    	--enable-inkboard \
     	--disable-mmx
 %make
 
