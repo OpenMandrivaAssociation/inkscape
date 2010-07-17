@@ -4,7 +4,7 @@
 %define version 0.47
 %define pre	%nil
 #define rel	0.%pre.1
-%define rel	3
+%define rel	4
 %define release %mkrel %{rel}
 
 Name:		inkscape
