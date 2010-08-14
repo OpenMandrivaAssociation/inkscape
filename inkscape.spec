@@ -1,10 +1,8 @@
 %define Werror_cflags %nil
 
 %define	name	inkscape
-%define version 0.47
-%define pre	%nil
-#define rel	0.%pre.1
-%define rel	5
+%define version 0.48.0
+%define rel	1
 %define release %mkrel %{rel}
 
 Name:		inkscape
@@ -14,14 +12,8 @@ Release:	%{release}
 License:	GPLv2+
 Group:		Graphics
 URL:		http://inkscape.sourceforge.net/
-Source:		http://prdownloads.sourceforge.net/%{name}/%{name}-%{version}%{pre}.tar.bz2
+Source:		http://prdownloads.sourceforge.net/%{name}/%{name}-%{version}.tar.bz2
 Source1:	%{name}-icons.tar.bz2
-# Fedora patches
-Patch2: 	inkscape-0.46-cxxinclude.patch
-# use uniconvertor to import coreldraw cdr files (not applied yet)
-Patch6:		inkscape-0.46-uniconv.patch
-# Fix build with poppler 0.12.2
-Patch7:		inkscape-poppler-0.12.2.patch
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 BuildRequires:  png-devel
 BuildRequires:  libxml2-devel >= 2.6.0
@@ -52,7 +44,6 @@ BuildRequires:	gsl-devel
 Requires: python-pyxml, python-lxml
 Requires(post):	desktop-file-utils
 Requires(postun): desktop-file-utils
-#Suggests:	uniconvertor
 
 %description
 Inkscape is a generic SVG-based vector-drawing program.
@@ -62,43 +53,21 @@ native file format. Therefore, it is a very useful tool for web designers
 and can be used as an interchange format for desktop publishing.
 
 %prep
-%setup -q -a1 -n %name-%version%pre
-%patch2 -p1 -b .cxxinclude
-# disabled for now, it does not seem to work
-# once this is working again, also the suggests on uniconvertor
-# should be uncommented
-#%patch6 -p1 -b .uniconv
-%patch7 -p1 -b .poppler0.12.2
+%setup -q -a1 -n %name-%version
 
 %build
-intltoolize --force
-aclocal
-automake
-autoconf
-CPPFLAGS="`Magick++-config --cppflags`"
-export CPPFLAGS
 %configure2_5x \
 	--with-python \
-	--with-perl \
-    	--disable-mmx
+	--with-perl
 %make
 
 %install
 rm -rf %{buildroot}
 %makeinstall_std
 
-# Menu support
-sed -i -e s/inkscape.png/inkscape/ %{buildroot}%{_datadir}/applications/*
-
 desktop-file-install --vendor="" \
-  --remove-category="Application" \
   --add-category="X-MandrivaLinux-CrossDesktop" \
   --dir %{buildroot}%{_datadir}/applications %{buildroot}%{_datadir}/applications/*
-
-# icons
-install -D -m 644 %{name}-48.png %{buildroot}/%_liconsdir/%{name}.png
-install -D -m 644 %{name}-32.png %{buildroot}/%_iconsdir/%{name}.png
-install -D -m 644 %{name}-16.png %{buildroot}/%_miconsdir/%{name}.png
 
 %find_lang %{name}
 
@@ -122,11 +91,7 @@ rm -rf %{buildroot}
 %doc AUTHORS ChangeLog NEWS README
 %{_bindir}/*
 %{_datadir}/applications/*.desktop
-%{_datadir}/pixmaps/*
 %{_datadir}/inkscape/
-#%{_libdir}/inkscape
 %{_mandir}/man1/*
 %{_mandir}/*/man1/*
-%{_iconsdir}/*.png
-%{_miconsdir}/*.png
-%{_liconsdir}/*.png
+%{_iconsdir}/hicolor/*/apps/*
