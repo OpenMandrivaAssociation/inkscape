@@ -14,6 +14,7 @@ Group:		Graphics
 URL:		http://inkscape.sourceforge.net/
 Source:		http://prdownloads.sourceforge.net/%{name}/%{name}-%{version}.tar.bz2
 Source1:	%{name}-icons.tar.bz2
+Patch0:		inkscape-0.48.0-poppler-0.16.patch
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 BuildRequires:  png-devel
 BuildRequires:  libxml2-devel >= 2.6.0
@@ -54,8 +55,10 @@ and can be used as an interchange format for desktop publishing.
 
 %prep
 %setup -q -a1 -n %name-%version
+%patch0 -p0
 
 %build
+autoreconf -fi
 %configure2_5x \
 	--with-python \
 	--with-perl
