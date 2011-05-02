@@ -2,7 +2,7 @@
 
 %define	name	inkscape
 %define version 0.48.1
-%define rel	2
+%define rel	3
 %define release %mkrel %{rel}
 
 Name:		inkscape
@@ -14,6 +14,9 @@ Group:		Graphics
 URL:		http://inkscape.sourceforge.net/
 Source:		http://prdownloads.sourceforge.net/%{name}/%{name}-%{version}.tar.bz2
 Source1:	%{name}-icons.tar.bz2
+Patch0:		inkscape-0.48.0-gcc46.patch
+Patch1:		inkscape-0.48.0-libwpd.patch
+Patch2:		inkscape-0.48.0-types.patch
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 BuildRequires:  png-devel
 BuildRequires:  libxml2-devel >= 2.6.0
@@ -54,8 +57,10 @@ and can be used as an interchange format for desktop publishing.
 
 %prep
 %setup -q -a1 -n %name-%version
+%apply_patches
 
 %build
+autoreconf -fi
 %configure2_5x \
 	--with-python \
 	--with-perl
