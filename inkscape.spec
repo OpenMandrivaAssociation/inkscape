@@ -2,7 +2,7 @@
 
 %define	name	inkscape
 %define version 0.48.2
-%define rel	1
+%define rel	2
 %define release %mkrel %{rel}
 
 Name:		inkscape
