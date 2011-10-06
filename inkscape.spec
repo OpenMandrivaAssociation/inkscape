@@ -1,20 +1,15 @@
 %define Werror_cflags %nil
 
-%define	name	inkscape
-%define version 0.48.2
-%define rel	2
-%define release %mkrel %{rel}
-
 Name:		inkscape
 Summary:	A vector-based drawing program using SVG
-Version:	%{version}
-Release:	%{release}
+Version:	0.48.2
+Release:	%mkrel 3
 License:	GPLv2+
 Group:		Graphics
 URL:		http://inkscape.sourceforge.net/
-Source:		http://prdownloads.sourceforge.net/%{name}/%{name}-%{version}.tar.bz2
+Source0:	http://prdownloads.sourceforge.net/%{name}/%{name}-%{version}.tar.bz2
 Source1:	%{name}-icons.tar.bz2
-BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
+Patch0:		inkscape-0.48.1-libpng15.patch
 BuildRequires:  png-devel
 BuildRequires:  libxml2-devel >= 2.6.0
 BuildRequires:	libgc-devel >= 6.4
@@ -44,6 +39,7 @@ BuildRequires:	gsl-devel
 Requires: python-pyxml, python-lxml
 Requires(post):	desktop-file-utils
 Requires(postun): desktop-file-utils
+BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 
 %description
 Inkscape is a generic SVG-based vector-drawing program.
