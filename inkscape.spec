@@ -3,7 +3,7 @@
 Name:		inkscape
 Summary:	A vector-based drawing program using SVG
 Version:	0.48.2
-Release:	%mkrel 3
+Release:	%mkrel 4
 License:	GPLv2+
 Group:		Graphics
 URL:		http://inkscape.sourceforge.net/
@@ -37,6 +37,7 @@ BuildRequires:	popt-devel
 BuildRequires:	imagemagick-devel
 BuildRequires:	gsl-devel
 Requires: python-pyxml, python-lxml
+Requires: pstoedit
 Requires(post):	desktop-file-utils
 Requires(postun): desktop-file-utils
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
