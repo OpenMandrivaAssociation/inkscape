@@ -3,7 +3,7 @@
 Name:		inkscape
 Summary:	A vector-based drawing program using SVG
 Version:	0.48.2
-Release:	%mkrel 4
+Release:	5
 License:	GPLv2+
 Group:		Graphics
 URL:		http://inkscape.sourceforge.net/
@@ -40,7 +40,6 @@ Requires: python-pyxml, python-lxml
 Requires: pstoedit
 Requires(post):	desktop-file-utils
 Requires(postun): desktop-file-utils
-BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 
 %description
 Inkscape is a generic SVG-based vector-drawing program.
@@ -61,7 +60,6 @@ autoreconf -fi
 %make
 
 %install
-rm -rf %{buildroot}
 %makeinstall_std
 
 desktop-file-install --vendor="" \
@@ -69,21 +67,6 @@ desktop-file-install --vendor="" \
   --dir %{buildroot}%{_datadir}/applications %{buildroot}%{_datadir}/applications/*
 
 %find_lang %{name}
-
-%if %mdkversion < 200900
-%post
-%update_menus
-%update_desktop_database
-%endif
-
-%if %mdkversion < 200900
-%postun
-%clean_menus
-%clean_desktop_database
-%endif
-
-%clean
-rm -rf %{buildroot}
 
 %files -f %{name}.lang
 %defattr(-, root, root)
