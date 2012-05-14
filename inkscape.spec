@@ -19,7 +19,7 @@ BuildRequires:	expat-devel
 BuildRequires:	libgc-devel >= 6.4
 BuildRequires:	python-devel
 BuildRequires:  perl-devel
-BuildRequires:	pkgocnfig(cairo)
+BuildRequires:	pkgconfig(cairo)
 BuildRequires:	pkgconfig(dbus-glib-1)
 BuildRequires:	pkgconfig(gnome-vfs-2.0)
 BuildRequires:	pkgconfig(gsl)
