@@ -44,11 +44,15 @@ Requires:	pstoedit
 Requires(post,postun):	desktop-file-utils
 
 %description
-Inkscape is a generic SVG-based vector-drawing program.
+Inkscape is a vector graphics editor, with capabilities similar to
+Illustrator, CorelDraw, or Xara X, using the W3C standard Scalable Vector
+Graphics (SVG) file format.  It is therefore a very useful tool for web
+designers and as an interchange format for desktop publishing.
 
-Inkscape uses the W3C SVG (= "Scalable Vector Graphics") standard as its
-native file format. Therefore, it is a very useful tool for web designers
-and can be used as an interchange format for desktop publishing.
+Inkscape supports many advanced SVG features (markers, clones, alpha
+blending, etc.) and great care is taken in designing a streamlined
+interface. It is very easy to edit nodes, perform complex path operations,
+trace bitmaps and much more.
 
 %prep
 %setup -q -a1
