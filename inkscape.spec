@@ -53,9 +53,9 @@ and can be used as an interchange format for desktop publishing.
 %prep
 %setup -q -a1
 %apply_patches
+autoreconf -fi
 
 %build
-autoreconf -fi
 %configure2_5x \
 	--with-python \
 	--with-perl
