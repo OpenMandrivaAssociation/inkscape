@@ -18,7 +18,7 @@ BuildRequires:	intltool
 BuildRequires:	perl-XML-Parser
 BuildRequires:	boost-devel
 BuildRequires:	expat-devel
-BuildRequires:	libgc-devel >= 6.4
+BuildRequires:	gc-devel >= 6.4
 BuildRequires:	python-devel
 BuildRequires:  perl-devel
 BuildRequires:	pkgconfig(cairo)
