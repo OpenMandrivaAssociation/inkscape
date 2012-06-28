@@ -20,7 +20,7 @@ BuildRequires:	boost-devel
 BuildRequires:	expat-devel
 BuildRequires:	gc-devel >= 6.4
 BuildRequires:	python-devel
-BuildRequires:  perl-devel
+BuildRequires:	perl-devel
 BuildRequires:	pkgconfig(cairo)
 BuildRequires:	pkgconfig(dbus-glib-1)
 BuildRequires:	pkgconfig(gnome-vfs-2.0)
@@ -30,17 +30,17 @@ BuildRequires:	pkgconfig(gtkspell-2.0)
 BuildRequires:	pkgconfig(ImageMagick)
 BuildRequires:	pkgconfig(lcms)
 BuildRequires:	pkgconfig(libgnomeprintui-2.2)
-BuildRequires:  pkgconfig(libpng)
+BuildRequires:	pkgconfig(libpng)
 BuildRequires:	pkgconfig(libwpg-0.2)
-BuildRequires:  pkgconfig(libxml-2.0)
+BuildRequires:	pkgconfig(libxml-2.0)
 BuildRequires:	pkgconfig(libxslt)
-BuildRequires:  pkgconfig(loudmouth-1.0)
+BuildRequires:	pkgconfig(loudmouth-1.0)
 BuildRequires:	pkgconfig(poppler-glib)
 BuildRequires:	pkgconfig(popt)
 
-Requires: python-pyxml
-Requires: python-lxml
-Requires: pstoedit
+Requires:	python-pyxml
+Requires:	python-lxml
+Requires:	pstoedit
 Requires(post,postun):	desktop-file-utils
 
 %description
