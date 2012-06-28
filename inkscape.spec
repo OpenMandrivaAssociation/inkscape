@@ -3,13 +3,14 @@
 Name:		inkscape
 Summary:	A vector-based drawing program using SVG
 Version:	0.48.3.1
-Release:	1
+Release:	2
 License:	GPLv2+
 Group:		Graphics
 URL:		http://inkscape.sourceforge.net/
 Source0:	http://prdownloads.sourceforge.net/%{name}/%{name}-%{version}.tar.bz2
 Source1:	%{name}-icons.tar.bz2
 Patch0:		inkscape-0.48.1-libpng15.patch
+Patch1:		inkscape-poppler20.patch
 
 BuildRequires:	desktop-file-utils
 BuildRequires:	intltool
@@ -77,4 +78,3 @@ desktop-file-install --vendor="" \
 %{_iconsdir}/hicolor/*/apps/*
 %{_mandir}/man1/*
 %{_mandir}/*/man1/*
-
