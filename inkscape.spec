@@ -10,6 +10,7 @@ URL:		http://inkscape.sourceforge.net/
 Source0:	http://prdownloads.sourceforge.net/%{name}/%{name}-%{version}.tar.bz2
 Source1:	%{name}-icons.tar.bz2
 Patch0:		inkscape-0.48.1-libpng15.patch
+Patch1:		inkscape-automake-1.13.patch
 Patch3:		inkscape-0.48.2-poppler020.patch
 #Fix crash in Open/Save dialogue
 Patch5:		inkscape-0.48.3-gtkfiledialog.patch
@@ -60,6 +61,8 @@ and can be used as an interchange format for desktop publishing.
 %apply_patches
 
 # required for patch3
+aclocal
+automake -a
 autoreconf
 
 %build
