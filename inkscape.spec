@@ -9,7 +9,6 @@ Group:		Graphics
 URL:		http://inkscape.sourceforge.net/
 Source0:	http://prdownloads.sourceforge.net/%{name}/%{name}-%{version}.tar.bz2
 Source1:	%{name}-icons.tar.bz2
-Patch0:		inkscape-0.48.1-libpng15.patch
 Patch1:		inkscape-automake-1.13.patch
 Patch3:		inkscape-0.48.2-poppler020.patch
 #Fix crash in Open/Save dialogue
