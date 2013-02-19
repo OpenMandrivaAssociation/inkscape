@@ -10,7 +10,6 @@ URL:		http://inkscape.sourceforge.net/
 Source0:	http://prdownloads.sourceforge.net/%{name}/%{name}-%{version}.tar.bz2
 Source1:	%{name}-icons.tar.bz2
 Patch1:		inkscape-automake-1.13.patch
-Patch3:		inkscape-0.48.2-poppler020.patch
 #Fix crash in Open/Save dialogue
 Patch5:		inkscape-0.48.3-gtkfiledialog.patch
 
