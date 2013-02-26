@@ -20,7 +20,7 @@ BuildRequires:	boost-devel
 BuildRequires:	expat-devel
 BuildRequires:	pkgconfig(bdw-gc) >= 6.4
 BuildRequires:	python-devel
-BuildRequires:  perl-devel
+BuildRequires: 	perl-devel
 BuildRequires:	pkgconfig(cairo)
 BuildRequires:	pkgconfig(dbus-glib-1)
 BuildRequires:	pkgconfig(gnome-vfs-2.0)
@@ -28,7 +28,7 @@ BuildRequires:	pkgconfig(gsl)
 BuildRequires:	pkgconfig(gtkmm-2.4)
 BuildRequires:	pkgconfig(gtkspell-2.0)
 BuildRequires:	pkgconfig(ImageMagick)
-BuildRequires:	pkgconfig(lcms)
+BuildRequires:	pkgconfig(lcms2)
 BuildRequires:	pkgconfig(libgnomeprintui-2.2)
 BuildRequires:  pkgconfig(libpng)
 BuildRequires:	pkgconfig(libwpg-0.2)
@@ -39,11 +39,11 @@ BuildRequires:	pkgconfig(poppler-glib)
 BuildRequires:	pkgconfig(popt)
 BuildRequires:	gdk-pixbuf2.0
 
-Requires: python-pyxml
-Requires: python-lxml
-Requires: pstoedit
-Requires: gnome-vfs2
-Requires: gdk-pixbuf2.0
+Requires:	python-pyxml
+Requires:	python-lxml
+Requires:	pstoedit
+Requires:	gnome-vfs2
+Requires:	gdk-pixbuf2.0
 Requires(post,postun):	desktop-file-utils
 Suggests:	uniconvertor
 
