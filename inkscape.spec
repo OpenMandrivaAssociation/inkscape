@@ -60,9 +60,9 @@ and can be used as an interchange format for desktop publishing.
 # required for patch3
 autoreconf -fi
 
-export CXXFLAGS="%optflags -fpermissive"
 
 %build
+export CXXFLAGS="%optflags -fpermissive"
 %configure2_5x \
 	--with-python \
 	--with-perl
