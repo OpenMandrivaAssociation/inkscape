@@ -8,7 +8,7 @@ License:	GPLv2+
 Group:		Graphics
 Url:		http://inkscape.sourceforge.net/
 Source0:	http://prdownloads.sourceforge.net/%{name}/%{name}-%{version}.tar.bz2
-#Source1:	%{name}-icons.tar.bz2
+Source1:	%{name}-icons.tar.bz2
 Patch1:		inkscape-automake-1.13.patch
 Patch2:		inkscape-0.48.4-spuriouscomma.patch
  
