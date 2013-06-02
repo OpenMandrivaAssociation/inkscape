@@ -3,15 +3,17 @@
 Summary:	A vector-based drawing program using SVG
 Name:		inkscape
 Version:	0.48.4
-Release:	3
+Release:	4
 License:	GPLv2+
 Group:		Graphics
 Url:		http://inkscape.sourceforge.net/
 Source0:	http://prdownloads.sourceforge.net/%{name}/%{name}-%{version}.tar.bz2
-Source1:	%{name}-icons.tar.bz2
+#Source1:	%{name}-icons.tar.bz2
 Patch1:		inkscape-automake-1.13.patch
-#Fix crash in Open/Save dialogue
-Patch5:		inkscape-0.48.3-gtkfiledialog.patch
+Patch2:		inkscape-0.48.4-spuriouscomma.patch
+ 
+##Fix crash in Open/Save dialogue
+#Patch5:		inkscape-0.48.3-gtkfiledialog.patch
 
 BuildRequires:	desktop-file-utils
 BuildRequires:	gdk-pixbuf2.0
@@ -38,6 +40,9 @@ BuildRequires:	pkgconfig(loudmouth-1.0)
 BuildRequires:	pkgconfig(poppler-glib)
 BuildRequires:	pkgconfig(popt)
 BuildRequires:	pkgconfig(python)
+BuildRequires:	pkgconfig(gtkmm-2.4)
+BuildRequires:	pkgconfig(poppler-cairo)
+BuildRequires:	pkgconfig(freetype2)
 
 Requires(post,postun):	desktop-file-utils
 Requires:	gdk-pixbuf2.0
@@ -65,7 +70,11 @@ autoreconf -fi
 export CXXFLAGS="%optflags -fpermissive"
 %configure2_5x \
 	--with-python \
-	--with-perl
+	--with-perl \
+	--with-gnome-vfs        \
+        --with-xft              \
+        --enable-lcms           \
+        --enable-poppler-cairo
 %make
 
 %install
