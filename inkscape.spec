@@ -68,6 +68,8 @@ autoreconf -fi
 
 
 %build
+export CC=gcc
+export CXX=g++
 export CXXFLAGS="%optflags -fpermissive"
 %configure2_5x \
 	--with-python \
