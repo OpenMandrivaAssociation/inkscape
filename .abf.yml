@@ -1,4 +1,5 @@
----
-sources:
+removed_sources:
   inkscape-0.48.4.tar.bz2: 5f26f6ad191d1e7c2a9fb69a438722beb172224c
+sources:
+  inkscape-0.48.5.tar.bz2: 83ddb0c96069638f712a869039989bfd7d79c6a8
   inkscape-icons.tar.bz2: 855b86ea3315a79b0787b0ff8e32e2fde3f6cbb0

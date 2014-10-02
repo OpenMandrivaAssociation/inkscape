@@ -2,8 +2,8 @@
 
 Summary:	A vector-based drawing program using SVG
 Name:		inkscape
-Version:	0.48.4
-Release:	13
+Version:	0.48.5
+Release:	1
 License:	GPLv2+
 Group:		Graphics
 Url:		http://inkscape.sourceforge.net/
@@ -11,7 +11,8 @@ Source0:	http://prdownloads.sourceforge.net/%{name}/%{name}-%{version}.tar.bz2
 Source1:	%{name}-icons.tar.bz2
 Source100:	inkscape.rpmlintrc
 Patch1:		inkscape-automake-1.13.patch
-Patch2:		inkscape-0.48.4-spuriouscomma.patch
+Patch2:		inkscape-0.48.4-gc-7.4.patch
+Patch3:		0001-update-to-new-libwpg.patch
  
 ##Fix crash in Open/Save dialogue
 #Patch5:		inkscape-0.48.3-gtkfiledialog.patch
@@ -32,9 +33,8 @@ BuildRequires:	pkgconfig(gtkmm-2.4)
 BuildRequires:	pkgconfig(gtkspell-2.0)
 BuildRequires:	pkgconfig(ImageMagick)
 BuildRequires:	pkgconfig(lcms2)
-BuildRequires:	pkgconfig(libgnomeprintui-2.2)
 BuildRequires:	pkgconfig(libpng)
-BuildRequires:	pkgconfig(libwpg-0.2)
+BuildRequires:	pkgconfig(libwpg-0.3)
 BuildRequires:	pkgconfig(libxml-2.0)
 BuildRequires:	pkgconfig(libxslt)
 BuildRequires:	pkgconfig(loudmouth-1.0)
