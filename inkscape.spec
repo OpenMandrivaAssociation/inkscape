@@ -3,7 +3,7 @@
 Summary:	A vector-based drawing program using SVG
 Name:		inkscape
 Version:	0.48.5
-Release:	1
+Release:	2
 License:	GPLv2+
 Group:		Graphics
 Url:		http://inkscape.sourceforge.net/
@@ -49,7 +49,6 @@ Requires(post,postun):	desktop-file-utils
 Requires:	gdk-pixbuf2.0
 Requires:	gnome-vfs2
 Requires:	pstoedit
-Requires:	python-pyxml
 Requires:	python-lxml
 Suggests:	uniconvertor
 
@@ -71,13 +70,14 @@ autoreconf -fi
 export CC=gcc
 export CXX=g++
 export CXXFLAGS="%optflags -fpermissive"
-%configure2_5x \
+%configure \
 	--with-python \
 	--with-perl \
 	--with-gnome-vfs        \
-        --with-xft              \
-        --enable-lcms           \
-        --enable-poppler-cairo
+    --with-xft              \
+    --enable-lcms           \
+    --enable-poppler-cairo
+
 %make
 
 %install
