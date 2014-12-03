@@ -3,7 +3,7 @@
 Summary:	A vector-based drawing program using SVG
 Name:		inkscape
 Version:	0.48.4
-Release:	8
+Release:	8.1
 License:	GPLv2+
 Group:		Graphics
 Url:		http://inkscape.sourceforge.net/
@@ -48,7 +48,6 @@ Requires(post,postun):	desktop-file-utils
 Requires:	gdk-pixbuf2.0
 Requires:	gnome-vfs2
 Requires:	pstoedit
-Requires:	python-pyxml
 Requires:	python-lxml
 Suggests:	uniconvertor
 
