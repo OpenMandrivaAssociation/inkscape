@@ -13,7 +13,7 @@ Source100:	inkscape.rpmlintrc
 Patch1:		inkscape-automake-1.13.patch
 Patch2:		inkscape-0.48.4-gc-7.4.patch
 Patch3:		0001-update-to-new-libwpg.patch
- 
+Patch4:		inkscape-0.48.4-poppler-0.26.patch
 ##Fix crash in Open/Save dialogue
 #Patch5:		inkscape-0.48.3-gtkfiledialog.patch
 
