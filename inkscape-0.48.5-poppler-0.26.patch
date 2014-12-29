@@ -1,0 +1,90 @@
+diff -Naur inkscape-0.48.5/src/extension/internal/pdfinput/pdf-parser.cpp inkscape-0.48.5.tpg/src/extension/internal/pdfinput/pdf-parser.cpp
+--- inkscape-0.48.5/src/extension/internal/pdfinput/pdf-parser.cpp	2014-06-09 13:24:41.000000000 +0000
++++ inkscape-0.48.5.tpg/src/extension/internal/pdfinput/pdf-parser.cpp	2014-12-29 16:58:12.997502501 +0000
+@@ -863,7 +863,7 @@
+ #if defined(POPPLER_EVEN_NEWER_COLOR_SPACE_API)
+ 	    blendingColorSpace = GfxColorSpace::parse(&obj5, NULL, NULL);
+ #elif defined(POPPLER_NEW_COLOR_SPACE_API) || defined(POPPLER_NEW_ERRORAPI)
+-	    blendingColorSpace = GfxColorSpace::parse(&obj5, NULL);
++	    blendingColorSpace = GfxColorSpace::parse(&obj5, NULL, NULL);
+ #else
+ 	    blendingColorSpace = GfxColorSpace::parse(&obj5);
+ #endif
+@@ -1093,9 +1093,9 @@
+   }
+ #elif defined(POPPLER_NEW_COLOR_SPACE_API) || defined(POPPLER_NEW_ERRORAPI)
+   if (obj.isNull()) {
+-    colorSpace = GfxColorSpace::parse(&args[0], NULL);
++    colorSpace = GfxColorSpace::parse(&args[0], NULL, NULL);
+   } else {
+-    colorSpace = GfxColorSpace::parse(&obj, NULL);
++    colorSpace = GfxColorSpace::parse(&obj, NULL, NULL);
+   }
+ #else
+   if (obj.isNull()) {
+@@ -1134,9 +1134,9 @@
+   }
+ #elif defined(POPPLER_NEW_COLOR_SPACE_API) || defined(POPPLER_NEW_ERRORAPI)
+   if (obj.isNull()) {
+-    colorSpace = GfxColorSpace::parse(&args[0], NULL);
++    colorSpace = GfxColorSpace::parse(&args[0], NULL, NULL);
+   } else {
+-    colorSpace = GfxColorSpace::parse(&obj, NULL);
++    colorSpace = GfxColorSpace::parse(&obj, NULL, NULL);
+   }
+ #else
+   if (obj.isNull()) {
+@@ -1233,7 +1233,7 @@
+     }
+ #elif defined(POPPLER_NEW_COLOR_SPACE_API) || defined(POPPLER_NEW_ERRORAPI)
+     if (args[numArgs-1].isName() &&
+-	(pattern = res->lookupPattern(args[numArgs-1].getName(), NULL))) {
++	(pattern = res->lookupPattern(args[numArgs-1].getName(), NULL, NULL))) {
+       state->setFillPattern(pattern);
+       builder->updateStyle(state);
+     }
+@@ -1299,7 +1299,7 @@
+     }
+ #elif defined(POPPLER_NEW_COLOR_SPACE_API) || defined(POPPLER_NEW_ERRORAPI)
+     if (args[numArgs-1].isName() &&
+-	(pattern = res->lookupPattern(args[numArgs-1].getName(), NULL))) {
++	(pattern = res->lookupPattern(args[numArgs-1].getName(), NULL, NULL))) 
+       state->setStrokePattern(pattern);
+       builder->updateStyle(state);
+     }
+@@ -1741,7 +1741,7 @@
+     return;
+   }
+ #elif defined(POPPLER_NEW_COLOR_SPACE_API) || defined(POPPLER_NEW_ERRORAPI)
+-  if (!(shading = res->lookupShading(args[0].getName(), NULL))) {
++  if (!(shading = res->lookupShading(args[0].getName(), NULL, NULL))) {
+     return;
+   }
+ #else
+@@ -2759,7 +2759,7 @@
+ #if defined(POPPLER_EVEN_NEWER_COLOR_SPACE_API)
+             colorSpace = GfxColorSpace::parse(&obj1, NULL, NULL);
+ #elif defined(POPPLER_NEW_COLOR_SPACE_API) || defined(POPPLER_NEW_ERRORAPI)
+-      colorSpace = GfxColorSpace::parse(&obj1, NULL);
++      colorSpace = GfxColorSpace::parse(&obj1, NULL, NULL);
+ #else
+       colorSpace = GfxColorSpace::parse(&obj1);
+ #endif
+@@ -2850,7 +2850,7 @@
+ #if defined(POPPLER_EVEN_NEWER_COLOR_SPACE_API)
+             GfxColorSpace *maskColorSpace = GfxColorSpace::parse(&obj1, NULL, NULL);
+ #elif defined(POPPLER_NEW_COLOR_SPACE_API) || defined(POPPLER_NEW_ERRORAPI)
+-      maskColorSpace = GfxColorSpace::parse(&obj1, NULL);
++      maskColorSpace = GfxColorSpace::parse(&obj1, NULL, NULL);
+ #else
+       maskColorSpace = GfxColorSpace::parse(&obj1);
+ #endif
+@@ -3043,7 +3043,7 @@
+ #if defined(POPPLER_EVEN_NEWER_COLOR_SPACE_API)
+ 	blendingColorSpace = GfxColorSpace::parse(&obj3, NULL, NULL);
+ #elif defined(POPPLER_NEW_COLOR_SPACE_API) || defined(POPPLER_NEW_ERRORAPI)
+-	blendingColorSpace = GfxColorSpace::parse(&obj3, NULL);
++	blendingColorSpace = GfxColorSpace::parse(&obj3, NULL, NULL);
+ #else
+ 	blendingColorSpace = GfxColorSpace::parse(&obj3);
+ #endif

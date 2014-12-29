@@ -10,7 +10,7 @@ Url:		http://inkscape.sourceforge.net/
 Source0:	http://prdownloads.sourceforge.net/%{name}/%{name}-%{version}.tar.bz2
 Source1:	%{name}-icons.tar.bz2
 Source100:	inkscape.rpmlintrc
-Patch0:		inkscape-0.48.4-poppler-0.26.patch
+Patch0:		inkscape-0.48.5-poppler-0.26.patch
 Patch1:		inkscape-automake-1.13.patch
 Patch2:		inkscape-0.48.4-gc-7.4.patch
 Patch3:		0001-update-to-new-libwpg.patch
