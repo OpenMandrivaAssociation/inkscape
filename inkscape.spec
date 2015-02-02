@@ -2,21 +2,14 @@
 
 Summary:	A vector-based drawing program using SVG
 Name:		inkscape
-Version:	0.48.5
-Release:	3
+Version:	0.91
+Release:	1
 License:	GPLv2+
 Group:		Graphics
 Url:		http://inkscape.sourceforge.net/
 Source0:	http://prdownloads.sourceforge.net/%{name}/%{name}-%{version}.tar.bz2
 Source1:	%{name}-icons.tar.bz2
 Source100:	inkscape.rpmlintrc
-Patch0:		inkscape-0.48.5-poppler-0.28.patch
-Patch1:		inkscape-automake-1.13.patch
-Patch2:		inkscape-0.48.4-gc-7.4.patch
-Patch3:		0001-update-to-new-libwpg.patch
-
-##Fix crash in Open/Save dialogue
-#Patch5:		inkscape-0.48.3-gtkfiledialog.patch
 
 BuildRequires:	desktop-file-utils
 BuildRequires:	gdk-pixbuf2.0
@@ -28,7 +21,6 @@ BuildRequires:	pkgconfig(bdw-gc) >= 6.4
 BuildRequires:	pkgconfig(cairo)
 BuildRequires:	pkgconfig(dbus-glib-1)
 BuildRequires:	pkgconfig(expat)
-BuildRequires:	pkgconfig(gnome-vfs-2.0)
 BuildRequires:	pkgconfig(gsl)
 BuildRequires:	pkgconfig(gtkmm-2.4)
 BuildRequires:	pkgconfig(gtkspell-2.0)
@@ -48,7 +40,6 @@ BuildRequires:	pkgconfig(freetype2)
 
 Requires(post,postun):	desktop-file-utils
 Requires:	gdk-pixbuf2.0
-Requires:	gnome-vfs2
 Requires:	pstoedit
 Requires:	python-lxml
 Suggests:	uniconvertor
@@ -63,19 +54,12 @@ and can be used as an interchange format for desktop publishing.
 %prep
 %setup -q -a1
 %apply_patches
-# required for patch 0 and 3
-autoreconf -fi
-
 
 %build
 export CC=gcc
 export CXX=g++
 export CXXFLAGS="%optflags -fpermissive"
 %configure \
-	--with-python \
-	--with-perl \
-	--with-gnome-vfs        \
-    --with-xft              \
     --enable-lcms           \
     --enable-poppler-cairo
 
@@ -83,6 +67,8 @@ export CXXFLAGS="%optflags -fpermissive"
 
 %install
 %makeinstall_std
+
+perl -i -lne 'print unless m{^\[Drawing Shortcut Group\]}..1' %{buildroot}%{_datadir}/applications/*
 
 desktop-file-install --vendor="" \
 	--add-category="X-MandrivaLinux-CrossDesktop" \
