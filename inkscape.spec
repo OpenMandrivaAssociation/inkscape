@@ -2,18 +2,14 @@
 
 Summary:	A vector-based drawing program using SVG
 Name:		inkscape
-Version:	0.48.4
-Release:	8.1
+Version:	0.91
+Release:	0.1
 License:	GPLv2+
 Group:		Graphics
 Url:		http://inkscape.sourceforge.net/
 Source0:	http://prdownloads.sourceforge.net/%{name}/%{name}-%{version}.tar.bz2
 Source1:	%{name}-icons.tar.bz2
-Patch1:		inkscape-automake-1.13.patch
-Patch2:		inkscape-0.48.4-spuriouscomma.patch
- 
-##Fix crash in Open/Save dialogue
-#Patch5:		inkscape-0.48.3-gtkfiledialog.patch
+Source100:	inkscape.rpmlintrc
 
 BuildRequires:	desktop-file-utils
 BuildRequires:	gdk-pixbuf2.0
@@ -25,13 +21,11 @@ BuildRequires:	pkgconfig(bdw-gc) >= 6.4
 BuildRequires:	pkgconfig(cairo)
 BuildRequires:	pkgconfig(dbus-glib-1)
 BuildRequires:	pkgconfig(expat)
-BuildRequires:	pkgconfig(gnome-vfs-2.0)
 BuildRequires:	pkgconfig(gsl)
 BuildRequires:	pkgconfig(gtkmm-2.4)
 BuildRequires:	pkgconfig(gtkspell-2.0)
 BuildRequires:	pkgconfig(ImageMagick)
 BuildRequires:	pkgconfig(lcms2)
-BuildRequires:	pkgconfig(libgnomeprintui-2.2)
 BuildRequires:	pkgconfig(libpng)
 BuildRequires:	pkgconfig(libwpg-0.3)
 BuildRequires:	pkgconfig(libxml-2.0)
@@ -46,7 +40,6 @@ BuildRequires:	pkgconfig(freetype2)
 
 Requires(post,postun):	desktop-file-utils
 Requires:	gdk-pixbuf2.0
-Requires:	gnome-vfs2
 Requires:	pstoedit
 Requires:	python-lxml
 Suggests:	uniconvertor
@@ -61,23 +54,21 @@ and can be used as an interchange format for desktop publishing.
 %prep
 %setup -q -a1
 %apply_patches
-# required for patch3
-autoreconf -fi
-
 
 %build
+export CC=gcc
+export CXX=g++
 export CXXFLAGS="%optflags -fpermissive"
-%configure2_5x \
-	--with-python \
-	--with-perl \
-	--with-gnome-vfs        \
-        --with-xft              \
-        --enable-lcms           \
-        --enable-poppler-cairo
+%configure \
+    --enable-lcms           \
+    --enable-poppler-cairo
+
 %make
 
 %install
 %makeinstall_std
+
+perl -i -lne 'print unless m{^\[Drawing Shortcut Group\]}..1' %{buildroot}%{_datadir}/applications/*
 
 desktop-file-install --vendor="" \
 	--add-category="X-MandrivaLinux-CrossDesktop" \
