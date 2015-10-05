@@ -3,7 +3,7 @@
 Summary:	A vector-based drawing program using SVG
 Name:		inkscape
 Version:	0.91
-Release:	6
+Release:	7
 License:	GPLv2+
 Group:		Graphics
 Url:		http://inkscape.sourceforge.net/
@@ -85,4 +85,3 @@ desktop-file-install --vendor="" \
 %{_iconsdir}/hicolor/*/apps/*
 %{_mandir}/man1/*
 %{_mandir}/*/man1/*
-
