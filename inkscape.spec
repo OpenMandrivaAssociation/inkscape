@@ -58,10 +58,12 @@ and can be used as an interchange format for desktop publishing.
 %build
 export CC=gcc
 export CXX=g++
-export CXXFLAGS="%optflags -fpermissive"
+export CXXFLAGS="%optflags -fpermissive -std=c++11"
+
 %configure \
     --enable-lcms           \
-    --enable-poppler-cairo
+    --enable-poppler-cairo \
+    --disable-strict-build
 
 %make
 
