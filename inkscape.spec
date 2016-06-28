@@ -16,6 +16,7 @@ BuildRequires:	gdk-pixbuf2.0
 BuildRequires:	intltool
 BuildRequires:	perl-XML-Parser
 BuildRequires:	boost-devel
+BuildRequires:	boost-core-devel
 BuildRequires:	perl-devel
 BuildRequires:	pkgconfig(bdw-gc) >= 6.4
 BuildRequires:	pkgconfig(cairo)
