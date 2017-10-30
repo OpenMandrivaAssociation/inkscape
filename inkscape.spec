@@ -2,8 +2,8 @@
 
 Summary:	A vector-based drawing program using SVG
 Name:		inkscape
-Version:	0.91
-Release:	9
+Version:	0.92.2
+Release:	1
 License:	GPLv2+
 Group:		Graphics
 Url:		http://inkscape.sourceforge.net/
@@ -54,6 +54,9 @@ and can be used as an interchange format for desktop publishing.
 %prep
 %setup -q -a1
 %apply_patches
+autoreconf -fiv
+intltoolize --force
+libtoolize --copy --force
 
 %build
 export CC=gcc
@@ -83,6 +86,7 @@ desktop-file-install --vendor="" \
 %doc AUTHORS ChangeLog NEWS README
 %{_bindir}/*
 %{_datadir}/applications/*.desktop
+%{_datadir}/appdata/inkscape.appdata.xml
 %{_datadir}/inkscape/
 %{_iconsdir}/hicolor/*/apps/*
 %{_mandir}/man1/*
