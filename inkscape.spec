@@ -3,7 +3,7 @@
 Summary:	A vector-based drawing program using SVG
 Name:		inkscape
 Version:	0.92.3
-Release:	1
+Release:	2
 License:	GPLv2+
 Group:		Graphics
 Url:		http://inkscape.sourceforge.net/
@@ -56,7 +56,7 @@ and can be used as an interchange format for desktop publishing.
 
 %prep
 %setup -q -a1
-%apply_patches
+%autopatch -p1
 autoreconf -fiv
 intltoolize --force
 libtoolize --copy --force
@@ -71,10 +71,10 @@ export CXXFLAGS="%optflags -fpermissive -std=c++11"
     --enable-poppler-cairo \
     --disable-strict-build
 
-%make
+%make_build
 
 %install
-%makeinstall_std
+%make_install
 
 perl -i -lne 'print unless m{^\[Drawing Shortcut Group\]}..1' %{buildroot}%{_datadir}/applications/*
 
