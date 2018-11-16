@@ -11,7 +11,7 @@ Source0:	https://inkscape.org/en/gallery/item/12187/inkscape-%{version}.tar.bz2
 Source1:	%{name}-icons.tar.bz2
 Source100:	inkscape.rpmlintrc
 Patch0:		poppler-fixes-from-master.patch
-
+Patch1:		https://gitlab.com/inkscape/inkscape/commit/d047859d90cef3784e2d13e40887a70d8d517897.patch
 BuildRequires:	desktop-file-utils
 BuildRequires:	gdk-pixbuf2.0
 BuildRequires:	intltool
