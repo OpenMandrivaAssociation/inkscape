@@ -10,7 +10,7 @@ Url:		http://inkscape.sourceforge.net/
 Source0:	https://inkscape.org/en/gallery/item/12187/inkscape-%{version}.tar.bz2
 Source1:	%{name}-icons.tar.bz2
 Source100:	inkscape.rpmlintrc
-Patch0:		0001-Fix-compilation-with-poppler-0.65.0.patch
+Patch0:		poppler-fixes-from-master.patch
 
 BuildRequires:	desktop-file-utils
 BuildRequires:	gdk-pixbuf2.0
