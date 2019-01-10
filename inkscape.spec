@@ -41,6 +41,7 @@ BuildRequires:	pkgconfig(python)
 BuildRequires:	pkgconfig(gtkmm-2.4)
 BuildRequires:	pkgconfig(poppler-cairo)
 BuildRequires:	pkgconfig(freetype2)
+BuildRequires:	pkgconfig(atomic_ops)
 
 Requires(post,postun):	desktop-file-utils
 Requires:	gdk-pixbuf2.0
