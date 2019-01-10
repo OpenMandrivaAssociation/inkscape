@@ -3,7 +3,7 @@
 Summary:	A vector-based drawing program using SVG
 Name:		inkscape
 Version:	0.92.3
-Release:	3
+Release:	4
 License:	GPLv2+
 Group:		Graphics
 Url:		http://inkscape.sourceforge.net/
@@ -12,6 +12,7 @@ Source1:	%{name}-icons.tar.bz2
 Source100:	inkscape.rpmlintrc
 Patch0:		poppler-fixes-from-master.patch
 Patch1:		https://gitlab.com/inkscape/inkscape/commit/d047859d90cef3784e2d13e40887a70d8d517897.patch
+Patch2:		inkscape-0.92.3-poppler-82.patch
 BuildRequires:	desktop-file-utils
 BuildRequires:	gdk-pixbuf2.0
 BuildRequires:	intltool
@@ -55,8 +56,7 @@ native file format. Therefore, it is a very useful tool for web designers
 and can be used as an interchange format for desktop publishing.
 
 %prep
-%setup -q -a1
-%autopatch -p1
+%autosetup -p1 -a1
 autoreconf -fiv
 intltoolize --force
 libtoolize --copy --force
