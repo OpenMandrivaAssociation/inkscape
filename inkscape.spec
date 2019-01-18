@@ -2,17 +2,14 @@
 
 Summary:	A vector-based drawing program using SVG
 Name:		inkscape
-Version:	0.92.3
-Release:	4
+Version:	0.92.4
+Release:	1
 License:	GPLv2+
 Group:		Graphics
 Url:		http://inkscape.sourceforge.net/
 Source0:	https://inkscape.org/en/gallery/item/12187/inkscape-%{version}.tar.bz2
 Source1:	%{name}-icons.tar.bz2
 Source100:	inkscape.rpmlintrc
-Patch0:		poppler-fixes-from-master.patch
-Patch1:		https://gitlab.com/inkscape/inkscape/commit/d047859d90cef3784e2d13e40887a70d8d517897.patch
-Patch2:		inkscape-0.92.3-poppler-82.patch
 BuildRequires:	desktop-file-utils
 BuildRequires:	gdk-pixbuf2.0
 BuildRequires:	intltool
