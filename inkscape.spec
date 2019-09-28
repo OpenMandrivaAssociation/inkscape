@@ -49,6 +49,7 @@ BuildRequires:	pkgconfig(python)
 BuildRequires:	pkgconfig(poppler-cairo)
 BuildRequires:	pkgconfig(freetype2)
 BuildRequires:	pkgconfig(atomic_ops)
+BuildRequires:	cmake(double-conversion)
 BuildRequires:	cmake ninja
 BuildRequires:	potrace-devel
 
