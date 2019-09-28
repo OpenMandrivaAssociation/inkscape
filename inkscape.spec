@@ -1,16 +1,16 @@
 %define Werror_cflags %nil
+%define beta beta1
 
 Summary:	A vector-based drawing program using SVG
 Name:		inkscape
-Version:	0.92.4
-Release:	5
+Version:	1.0
+Release:	%{?beta:0.%{beta}.}1
 License:	GPLv2+
 Group:		Graphics
 Url:		http://inkscape.sourceforge.net/
-Source0:	https://inkscape.org/en/gallery/item/12187/inkscape-%{version}.tar.bz2
+Source0:	https://inkscape.org/gallery/item/14917/inkscape-%{version}%{beta}.tar.bz2
 Source1:	%{name}-icons.tar.bz2
 Source100:	inkscape.rpmlintrc
-Patch0:		inkscape-0.92.4-poppler.patch
 BuildRequires:	desktop-file-utils
 BuildRequires:	gdk-pixbuf2.0
 BuildRequires:	intltool
@@ -24,8 +24,12 @@ BuildRequires:	pkgconfig(cairo)
 BuildRequires:	pkgconfig(dbus-glib-1)
 BuildRequires:	pkgconfig(expat)
 BuildRequires:	pkgconfig(gsl)
-BuildRequires:	pkgconfig(gtkmm-2.4)
 BuildRequires:	pkgconfig(gtkspell-2.0)
+BuildRequires:	pkgconfig(gtkmm-3.0) >= 3.22
+BuildRequires:	pkgconfig(gdkmm-3.0) >= 3.22
+BuildRequires:	pkgconfig(gtk+-3.0) >= 3.22
+BuildRequires:	pkgconfig(gdk-3.0) >= 3.22
+BuildRequires:	pkgconfig(gdl-3.0) >= 3.4
 BuildRequires:	pkgconfig(ImageMagick)
 BuildRequires:	pkgconfig(lcms2)
 BuildRequires:	pkgconfig(libpng)
@@ -36,10 +40,11 @@ BuildRequires:	pkgconfig(loudmouth-1.0)
 BuildRequires:	pkgconfig(poppler-glib)
 BuildRequires:	pkgconfig(popt)
 BuildRequires:	pkgconfig(python)
-BuildRequires:	pkgconfig(gtkmm-2.4)
 BuildRequires:	pkgconfig(poppler-cairo)
 BuildRequires:	pkgconfig(freetype2)
 BuildRequires:	pkgconfig(atomic_ops)
+BuildRequires:	cmake ninja
+BuildRequires:	potrace-devel
 
 Requires(post,postun):	desktop-file-utils
 Requires:	gdk-pixbuf2.0
@@ -55,25 +60,21 @@ native file format. Therefore, it is a very useful tool for web designers
 and can be used as an interchange format for desktop publishing.
 
 %prep
-%autosetup -p1 -a1
-autoreconf -fiv
-intltoolize --force
-libtoolize --copy --force
+%autosetup -p1 -a1 -n %{name}-%{version}%{beta}
+%cmake \
+	-DWITH_DBUS:BOOL=ON \
+	-DWITH_IMAGE_MAGICK:BOOL=ON \
+	-DWITH_OPENMP:BOOL=ON \
+	-G Ninja
 
 %build
-export CC=gcc
-export CXX=g++
-export CXXFLAGS="%optflags -fpermissive -std=c++11"
-
-%configure \
-    --enable-lcms           \
-    --enable-poppler-cairo \
-    --disable-strict-build
-
-%make_build
+#export CC=gcc
+#export CXX=g++
+#export CXXFLAGS="%optflags -fpermissive -std=c++11"
+%ninja_build -C build
 
 %install
-%make_install
+%ninja_install -C build
 
 perl -i -lne 'print unless m{^\[Drawing Shortcut Group\]}..1' %{buildroot}%{_datadir}/applications/*
 
@@ -85,11 +86,13 @@ desktop-file-install --vendor="" \
 %find_lang %{name}
 
 %files -f %{name}.lang
-%doc AUTHORS ChangeLog NEWS README
+%doc AUTHORS
+%doc %{_docdir}/inkscape/copyright
 %{_bindir}/*
 %{_datadir}/applications/*.desktop
-%{_datadir}/appdata/inkscape.appdata.xml
 %{_datadir}/inkscape/
 %{_iconsdir}/hicolor/*/apps/*
 %{_mandir}/man1/*
 %{_mandir}/*/man1/*
+%{_libdir}/inkscape/
+%{_datadir}/metainfo/org.inkscape.Inkscape.appdata.xml
