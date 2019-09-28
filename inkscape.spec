@@ -25,6 +25,12 @@ BuildRequires:	pkgconfig(dbus-glib-1)
 BuildRequires:	pkgconfig(expat)
 BuildRequires:	pkgconfig(gsl)
 BuildRequires:	pkgconfig(gtkspell-2.0)
+BuildRequires:	pkgconfig(harfbuzz)
+BuildRequires:	pkgconfig(pangocairo)
+BuildRequires:	pkgconfig(pangoft2)
+BuildRequires:	pkgconfig(fontconfig)
+BuildRequires:	pkgconfig(gmodule-2.0)
+BuildRequires:	pkgconfig(libsoup-2.4) >= 2.42
 BuildRequires:	pkgconfig(gtkmm-3.0) >= 3.22
 BuildRequires:	pkgconfig(gdkmm-3.0) >= 3.22
 BuildRequires:	pkgconfig(gtk+-3.0) >= 3.22
