@@ -4,7 +4,7 @@
 Summary:	A vector-based drawing program using SVG
 Name:		inkscape
 Version:	1.0
-Release:	%{?beta:0.%{beta}.}1
+Release:	%{?beta:0.%{beta}.}2
 License:	GPLv2+
 Group:		Graphics
 Url:		http://inkscape.sourceforge.net/
@@ -69,15 +69,14 @@ and can be used as an interchange format for desktop publishing.
 %prep
 %autosetup -p1 -a1 -n %{name}-%{version}%{beta}
 %cmake \
+	-DBUILD_STATIC_LIBS:BOOL=ON \
+	-DBUILD_SHARED_LIBS:BOOL=OFF \
 	-DWITH_DBUS:BOOL=ON \
 	-DWITH_IMAGE_MAGICK:BOOL=ON \
 	-DWITH_OPENMP:BOOL=ON \
 	-G Ninja
 
 %build
-#export CC=gcc
-#export CXX=g++
-#export CXXFLAGS="%optflags -fpermissive -std=c++11"
 %ninja_build -C build
 
 %install
@@ -101,5 +100,4 @@ desktop-file-install --vendor="" \
 %{_iconsdir}/hicolor/*/apps/*
 %{_mandir}/man1/*
 %{_mandir}/*/man1/*
-%{_libdir}/inkscape/
 %{_datadir}/metainfo/org.inkscape.Inkscape.appdata.xml
