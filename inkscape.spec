@@ -1,10 +1,10 @@
 %define Werror_cflags %nil
-%define beta beta1
+%define beta beta2
 
 Summary:	A vector-based drawing program using SVG
 Name:		inkscape
 Version:	1.0
-Release:	%{?beta:0.%{beta}.}2
+Release:	%{?beta:0.%{beta}.}3
 License:	GPLv2+
 Group:		Graphics
 Url:		http://inkscape.sourceforge.net/
@@ -67,7 +67,7 @@ native file format. Therefore, it is a very useful tool for web designers
 and can be used as an interchange format for desktop publishing.
 
 %prep
-%autosetup -p1 -a1 -n %{name}-%{version}%{beta}
+%autosetup -p1 -a1 -n %{name}-%{version}%{beta}_2019-12-03_2b71d25d45
 %cmake \
 	-DBUILD_STATIC_LIBS:BOOL=ON \
 	-DBUILD_SHARED_LIBS:BOOL=OFF \
