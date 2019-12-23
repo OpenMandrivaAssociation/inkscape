@@ -1,3 +1,6 @@
+%ifarch %{ix86}
+%define _disable_lto 1
+%endif
 %define Werror_cflags %nil
 %define beta beta2
 
