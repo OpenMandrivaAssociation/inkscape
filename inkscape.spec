@@ -1,10 +1,10 @@
 %define Werror_cflags %nil
-%define beta beta1
+%define beta beta2
 
 Summary:	A vector-based drawing program using SVG
 Name:		inkscape
 Version:	1.0
-Release:	%{?beta:0.%{beta}.}2
+Release:	%{?beta:0.%{beta}.}3
 License:	GPLv2+
 Group:		Graphics
 Url:		http://inkscape.sourceforge.net/
