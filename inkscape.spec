@@ -3,7 +3,7 @@
 %endif
 %define Werror_cflags %nil
 %define beta beta2
-%define	rc	rc1
+%define	rc rc1
 
 Summary:	A vector-based drawing program using SVG
 Name:		inkscape
