@@ -96,7 +96,6 @@ desktop-file-install --vendor="" \
 
 %files -f %{name}.lang
 %doc AUTHORS
-%doc %{_docdir}/inkscape/copyright
 %{_bindir}/*
 %{_datadir}/applications/*.desktop
 %{_datadir}/inkscape/
