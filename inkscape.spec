@@ -70,7 +70,7 @@ native file format. Therefore, it is a very useful tool for web designers
 and can be used as an interchange format for desktop publishing.
 
 %prep
-%autosetup -p1 -a1 -n %{name}-%{version}
+%autosetup -p1 -a1 -n %{name}-%{version}_2020-05-01_4035a4fb49
 %cmake \
 	-DBUILD_STATIC_LIBS:BOOL=ON \
 	-DBUILD_SHARED_LIBS:BOOL=OFF \
