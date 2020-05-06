@@ -2,16 +2,16 @@
 %define _disable_lto 1
 %endif
 %define Werror_cflags %nil
-%define beta beta2
+%define beta %nil
 
 Summary:	A vector-based drawing program using SVG
 Name:		inkscape
 Version:	1.0
-Release:	0.rc1.1
+Release:	1
 License:	GPLv2+
 Group:		Graphics
 Url:		http://inkscape.sourceforge.net/
-Source0:	https://inkscape.org/gallery/item/18046/%{name}-%{version}rc1_2020-04-09_09960d6f05.tar.xz
+Source0:	https://inkscape.org/gallery/item/18460/%{name}-%{version}.tar.xz
 Source1:	%{name}-icons.tar.bz2
 Source100:	inkscape.rpmlintrc
 BuildRequires:	desktop-file-utils
@@ -70,7 +70,7 @@ native file format. Therefore, it is a very useful tool for web designers
 and can be used as an interchange format for desktop publishing.
 
 %prep
-%autosetup -p1 -a1 -n %{name}-%{version}rc1_2020-04-09_09960d6f05
+%autosetup -p1 -a1 -n %{name}-%{version}
 %cmake \
 	-DBUILD_STATIC_LIBS:BOOL=ON \
 	-DBUILD_SHARED_LIBS:BOOL=OFF \
