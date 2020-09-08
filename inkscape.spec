@@ -6,14 +6,15 @@
 
 Summary:	A vector-based drawing program using SVG
 Name:		inkscape
-Version:	1.0
-Release:	4
+Version:	1.0.1
+Release:	1
 License:	GPLv2+
 Group:		Graphics
 Url:		http://inkscape.sourceforge.net/
-Source0:	https://inkscape.org/gallery/item/18460/%{name}-%{version}.tar.xz
+Source0:	https://inkscape.org/gallery/item/21571/%{name}-%{version}.tar.xz
 Source1:	%{name}-icons.tar.bz2
 Source100:	inkscape.rpmlintrc
+Patch0:		inkscape-1.0.1-compile.patch
 BuildRequires:	desktop-file-utils
 BuildRequires:	gdk-pixbuf2.0
 BuildRequires:	intltool
@@ -70,7 +71,7 @@ native file format. Therefore, it is a very useful tool for web designers
 and can be used as an interchange format for desktop publishing.
 
 %prep
-%autosetup -p1 -a1 -n %{name}-%{version}_2020-05-01_4035a4fb49
+%autosetup -p1 -a1 -n %{name}-%{version}_2020-09-07_3bc2e813f5
 %cmake \
 	-DBUILD_STATIC_LIBS:BOOL=ON \
 	-DBUILD_SHARED_LIBS:BOOL=OFF \
@@ -103,3 +104,4 @@ desktop-file-install --vendor="" \
 %{_mandir}/man1/*
 %{_mandir}/*/man1/*
 %{_datadir}/metainfo/org.inkscape.Inkscape.appdata.xml
+%{_datadir}/bash-completion/completions/inkscape
