@@ -14,7 +14,7 @@ Url:		http://inkscape.sourceforge.net/
 Source0:	https://inkscape.org/gallery/item/21571/%{name}-%{version}.tar.xz
 Source1:	%{name}-icons.tar.bz2
 Source100:	inkscape.rpmlintrc
-Patch0:		inkscape-1.0.1-compile.patch
+#Patch0:		inkscape-1.0.1-compile.patch
 BuildRequires:	desktop-file-utils
 BuildRequires:	gdk-pixbuf2.0
 BuildRequires:	intltool
