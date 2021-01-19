@@ -71,7 +71,7 @@ native file format. Therefore, it is a very useful tool for web designers
 and can be used as an interchange format for desktop publishing.
 
 %prep
-%autosetup -p1 -a1 -n %{name}-%{version}_2020-09-07_3bc2e813f5
+%autosetup -p1 -a1 -n %{name}-%{version}_2021-01-15_e86c870879
 %cmake \
 	-DBUILD_STATIC_LIBS:BOOL=ON \
 	-DBUILD_SHARED_LIBS:BOOL=OFF \
