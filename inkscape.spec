@@ -14,6 +14,9 @@ Url:		http://inkscape.sourceforge.net/
 Source0:	https://inkscape.org/gallery/item/21571/%{name}-%{version}.tar.xz
 Source1:	%{name}-icons.tar.bz2
 Source100:	inkscape.rpmlintrc
+# Import Fedora patch to fix build:
+# include/c++/10.2.1/type_traits:119:3: error: templates must have C++ linkage template<typename _B1, typename _B2, typename _B3, typename... _Bn>
+Patch0:		inkscape-glib-extern.patch
 
 BuildRequires:	desktop-file-utils
 BuildRequires:	gdk-pixbuf2.0
