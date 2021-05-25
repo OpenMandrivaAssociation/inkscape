@@ -4,19 +4,18 @@
 %define Werror_cflags %nil
 %define beta %nil
 
+%define devname %mklibname -d -s 2geom
+
 Summary:	A vector-based drawing program using SVG
 Name:		inkscape
-Version:	1.0.2
-Release:	5
+Version:	1.1
+Release:	1
 License:	GPLv2+
 Group:		Graphics
 Url:		http://inkscape.sourceforge.net/
-Source0:	https://inkscape.org/gallery/item/21571/%{name}-%{version}.tar.xz
+Source0:	https://media.inkscape.org/dl/resources/file/inkscape-%{version}.tar.xz
 Source1:	%{name}-icons.tar.bz2
 Source100:	inkscape.rpmlintrc
-# Import Fedora patch to fix build:
-# include/c++/10.2.1/type_traits:119:3: error: templates must have C++ linkage template<typename _B1, typename _B2, typename _B3, typename... _Bn>
-Patch0:		inkscape-glib-extern.patch
 
 BuildRequires:	desktop-file-utils
 BuildRequires:	gdk-pixbuf2.0
@@ -73,8 +72,15 @@ Inkscape uses the W3C SVG (= "Scalable Vector Graphics") standard as its
 native file format. Therefore, it is a very useful tool for web designers
 and can be used as an interchange format for desktop publishing.
 
+%package -n %{devname}
+Summary:	Static library and header files for the 2geom library
+Group:		Development/Libraries
+
+%description -n %{devname}
+Static library and header files for the 2geom library
+
 %prep
-%autosetup -p1 -a1 -n %{name}-%{version}_2021-01-15_e86c870879
+%autosetup -p1 -a1 -n %{name}-%{version}_2021-05-24_c4e8f9ed74
 %cmake \
 	-DBUILD_STATIC_LIBS:BOOL=ON \
 	-DBUILD_SHARED_LIBS:BOOL=OFF \
@@ -98,6 +104,10 @@ desktop-file-install --vendor="" \
 
 %find_lang %{name}
 
+%if "%{_lib}" != "lib"
+mv %{buildroot}%{_prefix}/lib/pkgconfig %{buildroot}%{_libdir}
+%endif
+
 %files -f %{name}.lang
 %doc AUTHORS
 %{_bindir}/*
@@ -108,3 +118,9 @@ desktop-file-install --vendor="" \
 %{_mandir}/*/man1/*
 %{_datadir}/metainfo/org.inkscape.Inkscape.appdata.xml
 %{_datadir}/bash-completion/completions/inkscape
+
+%files -n %{devname}
+%{_libdir}/lib2geom.a
+%{_libdir}/cmake/2Geom
+%{_includedir}/2geom-*
+%{_libdir}/pkgconfig/2geom.pc
