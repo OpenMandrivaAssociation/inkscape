@@ -8,12 +8,12 @@
 
 Summary:	A vector-based drawing program using SVG
 Name:		inkscape
-Version:	1.1
-Release:	4
+Version:	1.1.1
+Release:	1
 License:	GPLv2+
 Group:		Graphics
 Url:		http://inkscape.sourceforge.net/
-Source0:	https://media.inkscape.org/dl/resources/file/inkscape-%{version}.tar.xz
+Source0:	https://inkscape.org/gallery/item/29255/inkscape-%{version}_2021-09-20_3bf5ae0d25.tar.xz
 Source1:	%{name}-icons.tar.bz2
 Source100:	inkscape.rpmlintrc
 
@@ -80,7 +80,7 @@ Group:		Development/Libraries
 Static library and header files for the 2geom library
 
 %prep
-%autosetup -p1 -a1 -n %{name}-%{version}_2021-05-24_c4e8f9ed74
+%autosetup -p1 -a1 -n %{name}-%{version}_2021-09-20_3bf5ae0d25
 %cmake \
 	-DBUILD_STATIC_LIBS:BOOL=ON \
 	-DBUILD_SHARED_LIBS:BOOL=OFF \
