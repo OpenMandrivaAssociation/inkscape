@@ -80,7 +80,7 @@ Group:		Development/Libraries
 Static library and header files for the 2geom library
 
 %prep
-%autosetup -p1 -a1 -n %{name}-%{version}_2021-09-20_3bf5ae0d25
+%autosetup -p1 -a1 -n %{name}-%{version}_2022-02-04_0a00cf5339
 %cmake \
 	-DBUILD_STATIC_LIBS:BOOL=ON \
 	-DBUILD_SHARED_LIBS:BOOL=OFF \
