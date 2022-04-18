@@ -17,6 +17,10 @@ Source0:	https://inkscape.org/gallery/item/31668/inkscape-%{version}.tar.xz
 Source1:	%{name}-icons.tar.bz2
 Source100:	inkscape.rpmlintrc
 
+Patch0:		https://gitlab.com/inkscape/inkscape/-/merge_requests/4257.patch
+Patch1:		https://gitlab.com/inkscape/inkscape/-/merge_requests/4266.patch
+Patch2:		https://gitlab.com/inkscape/inkscape/-/merge_requests/4268.patch
+
 BuildRequires:	desktop-file-utils
 BuildRequires:	gdk-pixbuf2.0
 BuildRequires:	intltool
