@@ -17,6 +17,9 @@ Source0:	https://inkscape.org/gallery/item/31668/inkscape-%{version}.tar.xz
 Source1:	%{name}-icons.tar.bz2
 Source100:	inkscape.rpmlintrc
 
+Patch0:		inkscape-1.1.2-fix-build-with-poppler-22.03.patch-r1
+Patch1:		inkscape-1.1.2-fix-build-with-poppler-22.04.patch
+
 BuildRequires:	desktop-file-utils
 BuildRequires:	gdk-pixbuf2.0
 BuildRequires:	intltool
