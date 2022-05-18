@@ -8,17 +8,14 @@
 
 Summary:	A vector-based drawing program using SVG
 Name:		inkscape
-Version:	1.1.2
-Release:	2
+Version:	1.2
+Release:	1
 License:	GPLv2+
 Group:		Graphics
 Url:		http://inkscape.sourceforge.net/
-Source0:	https://inkscape.org/gallery/item/31668/inkscape-%{version}.tar.xz
+Source0:	https://inkscape.org/gallery/item/33449/inkscape-%{version}_2022-05-15_dc2aedaf03.tar.xz
 Source1:	%{name}-icons.tar.bz2
 Source100:	inkscape.rpmlintrc
-
-Patch0:		inkscape-1.1.2-fix-build-with-poppler-22.03.patch-r1
-Patch1:		inkscape-1.1.2-fix-build-with-poppler-22.04.patch
 
 BuildRequires:	desktop-file-utils
 BuildRequires:	gdk-pixbuf2.0
@@ -83,7 +80,7 @@ Group:		Development/Libraries
 Static library and header files for the 2geom library
 
 %prep
-%autosetup -p1 -a1 -n %{name}-%{version}_2022-02-04_0a00cf5339
+%autosetup -p1 -a1 -n %{name}-%{version}_2022-05-15_dc2aedaf03
 %cmake \
 	-DBUILD_STATIC_LIBS:BOOL=ON \
 	-DBUILD_SHARED_LIBS:BOOL=OFF \
@@ -106,10 +103,6 @@ desktop-file-install --vendor="" \
 	%{buildroot}%{_datadir}/applications/*
 
 %find_lang %{name}
-
-%if "%{_lib}" != "lib"
-mv %{buildroot}%{_prefix}/lib/pkgconfig %{buildroot}%{_libdir}
-%endif
 
 %files -f %{name}.lang
 %doc AUTHORS
