@@ -63,6 +63,7 @@ Requires(post,postun):	desktop-file-utils
 Requires:	gdk-pixbuf2.0
 Requires:	pstoedit
 Requires:	python-lxml
+Requires:	python3dist(numpy)
 Suggests:	uniconvertor
 
 %description
