@@ -9,7 +9,7 @@
 Summary:	A vector-based drawing program using SVG
 Name:		inkscape
 Version:	1.2.1
-Release:	4
+Release:	5
 License:	GPLv2+
 Group:		Graphics
 Url:		http://inkscape.sourceforge.net/
