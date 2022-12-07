@@ -8,12 +8,12 @@
 
 Summary:	A vector-based drawing program using SVG
 Name:		inkscape
-Version:	1.2.1
-Release:	8
+Version:	1.2.2
+Release:	1
 License:	GPLv2+
 Group:		Graphics
 Url:		http://inkscape.sourceforge.net/
-Source0:	https://inkscape.org/gallery/item/34673/inkscape-%{version}.tar.xz
+Source0:	https://inkscape.org/gallery/item/37360/inkscape-%{version}.tar.xz
 Source1:	%{name}-icons.tar.bz2
 Source100:	inkscape.rpmlintrc
 Patch0:		inkscape-1.2.1-poppler-22.09.patch
