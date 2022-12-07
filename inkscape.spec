@@ -16,7 +16,6 @@ Url:		http://inkscape.sourceforge.net/
 Source0:	https://inkscape.org/gallery/item/37360/inkscape-%{version}.tar.xz
 Source1:	%{name}-icons.tar.bz2
 Source100:	inkscape.rpmlintrc
-Patch0:		inkscape-1.2.1-poppler-22.09.patch
 
 BuildRequires:	desktop-file-utils
 BuildRequires:	gdk-pixbuf2.0
