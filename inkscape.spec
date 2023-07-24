@@ -42,7 +42,7 @@ BuildRequires:	pkgconfig(gdkmm-3.0) >= 3.22
 BuildRequires:	pkgconfig(gtk+-3.0) >= 3.22
 BuildRequires:	pkgconfig(gdk-3.0) >= 3.22
 BuildRequires:	pkgconfig(gdl-3.0) >= 3.4
-BuildRequires:	pkgconfig(libunwind)
+BuildRequires:	pkgconfig(libunwind-llvm)
 BuildRequires:	pkgconfig(GraphicsMagick)
 BuildRequires:	pkgconfig(lcms2)
 BuildRequires:	pkgconfig(libpng)
