@@ -9,7 +9,7 @@
 Summary:	A vector-based drawing program using SVG
 Name:		inkscape
 Version:	1.3.2
-Release:	4
+Release:	5
 License:	GPLv2+
 Group:		Graphics
 Url:		http://inkscape.org/
@@ -17,6 +17,7 @@ Source0:	https://inkscape.org/gallery/item/44615/inkscape-%{version}.tar.xz
 Source1:	%{name}-icons.tar.bz2
 Source100:	inkscape.rpmlintrc
 Patch0:		https://gitlab.com/inkscape/inkscape/-/merge_requests/6089.patch
+Patch1:		https://gitlab.com/inkscape/inkscape/-/merge_requests/6209.patch
 
 BuildRequires:	desktop-file-utils
 BuildRequires:	gdk-pixbuf2.0
