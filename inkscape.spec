@@ -16,9 +16,7 @@ Url:		http://inkscape.org/
 Source0:	https://inkscape.org/gallery/item/44615/inkscape-%{version}.tar.xz
 Source1:	%{name}-icons.tar.bz2
 Source100:	inkscape.rpmlintrc
-Patch0:		https://gitlab.com/inkscape/inkscape/-/merge_requests/6089.patch
-Patch1:		https://gitlab.com/inkscape/inkscape/-/merge_requests/6209.patch
-Patch2:		https://gitlab.com/inkscape/inkscape/-/merge_requests/6403.patch
+
 Patch3:		inkscape-1.3.2-compile.patch
 
 BuildRequires:	desktop-file-utils
