@@ -8,8 +8,8 @@
 
 Summary:	A vector-based drawing program using SVG
 Name:		inkscape
-Version:	1.3.2
-Release:	12
+Version:	1.4
+Release:	1
 License:	GPLv2+
 Group:		Graphics
 Url:		http://inkscape.org/
@@ -43,8 +43,7 @@ BuildRequires:	pkgconfig(gmodule-2.0)
 BuildRequires:	pkgconfig(libsoup-2.4) >= 2.42
 BuildRequires:	pkgconfig(gtkmm-3.0) >= 3.22
 BuildRequires:	pkgconfig(gdkmm-3.0) >= 3.22
-BuildRequires:	pkgconfig(gtk+-3.0) >= 3.22
-BuildRequires:	pkgconfig(gdk-3.0) >= 3.22
+BuildRequires:	pkgconfig(gtk4)
 BuildRequires:	pkgconfig(gdl-3.0) >= 3.4
 BuildRequires:	pkgconfig(libunwind-llvm)
 BuildRequires:	pkgconfig(GraphicsMagick)
@@ -86,7 +85,7 @@ Group:		Development/Libraries
 Static library and header files for the 2geom library
 
 %prep
-%autosetup -p1 -a1 -n %{name}-%{version}_2023-11-25_091e20ef0f
+%autosetup -p1 -a1 -n %{name}-%{version}_2024-10-09_e7c3feb100
 CXXFLAGS="%{optflags} -std=gnu++20" %cmake \
 	-DBUILD_STATIC_LIBS:BOOL=ON \
 	-DBUILD_SHARED_LIBS:BOOL=OFF \
