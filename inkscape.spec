@@ -39,7 +39,8 @@ BuildRequires:	pkgconfig(gmodule-2.0)
 BuildRequires:	pkgconfig(libsoup-2.4) >= 2.42
 BuildRequires:	pkgconfig(gtkmm-3.0) >= 3.22
 BuildRequires:	pkgconfig(gdkmm-3.0) >= 3.22
-BuildRequires:	pkgconfig(gtk4)
+BuildRequires:	pkgconfig(gtk+-3.0) >= 3.22
+BuildRequires:	pkgconfig(gdk-3.0) >= 3.22
 BuildRequires:	pkgconfig(gdl-3.0) >= 3.4
 BuildRequires:	pkgconfig(libunwind-llvm)
 BuildRequires:	pkgconfig(GraphicsMagick)
