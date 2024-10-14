@@ -13,7 +13,7 @@ Release:	1
 License:	GPLv2+
 Group:		Graphics
 Url:		http://inkscape.org/
-Source0:	https://inkscape.org/gallery/item/44615/inkscape-%{version}.tar.xz
+Source0:	https://inkscape.org/gallery/item/53679/inkscape-%{version}.tar.xz
 Source1:	%{name}-icons.tar.bz2
 Source100:	inkscape.rpmlintrc
 
