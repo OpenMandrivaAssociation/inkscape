@@ -92,6 +92,8 @@ CXXFLAGS="%{optflags} -std=gnu++20" %cmake \
 	-G Ninja
 
 %build
+export CC=gcc
+export CXX=g++
 %ninja_build -C build
 
 %install
