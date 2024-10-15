@@ -69,6 +69,9 @@ Requires:	python-lxml
 Requires:	python3dist(numpy)
 Suggests:	uniconvertor
 
+%patchlist
+inkscape-1.4-compile.patch
+
 %description
 Inkscape is a generic SVG-based vector-drawing program.
 
