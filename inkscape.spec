@@ -85,7 +85,8 @@ Static library and header files for the 2geom library
 
 %prep
 %autosetup -p1 -a1 -n %{name}-%{version}_2024-10-09_e7c3feb100
-CXXFLAGS="%{optflags} -std=gnu++20" %cmake \
+#CXXFLAGS="%{optflags} -std=gnu++20" 
+%cmake \
 	-DBUILD_STATIC_LIBS:BOOL=ON \
 	-DBUILD_SHARED_LIBS:BOOL=OFF \
 	-DWITH_DBUS:BOOL=ON \
@@ -94,8 +95,8 @@ CXXFLAGS="%{optflags} -std=gnu++20" %cmake \
 	-G Ninja
 
 %build
-export CC=gcc
-export CXX=g++
+#export CC=gcc
+#export CXX=g++
 %ninja_build -C build
 
 %install
