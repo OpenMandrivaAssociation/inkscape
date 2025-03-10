@@ -67,6 +67,7 @@ Requires:	gdk-pixbuf2.0
 Requires:	pstoedit
 Requires:	python-lxml
 Requires:	python3dist(numpy)
+Requires:	python-tinycss2
 Suggests:	uniconvertor
 
 %patchlist
