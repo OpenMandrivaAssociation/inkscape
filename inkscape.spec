@@ -8,8 +8,8 @@
 
 Summary:	A vector-based drawing program using SVG
 Name:		inkscape
-Version:	1.4
-Release:	6
+Version:	1.4.1
+Release:	1
 License:	GPLv2+
 Group:		Graphics
 Url:		https://inkscape.org/
