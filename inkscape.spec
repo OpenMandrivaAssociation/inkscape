@@ -72,9 +72,9 @@ Suggests:	uniconvertor
 
 %patchlist
 #inkscape-1.4-compile.patch
-inkscape-1.4-poppler-24.10.patch
-inkscape-1.4-poppler-24.11.patch
-inkscape-1.4-poppler-25.01.patch
+#inkscape-1.4-poppler-24.10.patch
+#inkscape-1.4-poppler-24.11.patch
+#inkscape-1.4-poppler-25.01.patch
 
 %description
 Inkscape is a generic SVG-based vector-drawing program.
