@@ -8,12 +8,12 @@
 
 Summary:	A vector-based drawing program using SVG
 Name:		inkscape
-Version:	1.4
-Release:	6
+Version:	1.4.1
+Release:	1
 License:	GPLv2+
 Group:		Graphics
 Url:		https://inkscape.org/
-Source0:	https://inkscape.org/gallery/item/53679/inkscape-%{version}.tar.xz
+Source0:	https://inkscape.org/gallery/item/55853/inkscape-%{version}.tar.xz
 Source1:	%{name}-icons.tar.bz2
 Source100:	inkscape.rpmlintrc
 
@@ -71,10 +71,6 @@ Requires:	python-tinycss2
 Suggests:	uniconvertor
 
 %patchlist
-inkscape-1.4-compile.patch
-inkscape-1.4-poppler-24.10.patch
-inkscape-1.4-poppler-24.11.patch
-inkscape-1.4-poppler-25.01.patch
 
 %description
 Inkscape is a generic SVG-based vector-drawing program.
@@ -91,7 +87,7 @@ Group:		Development/Libraries
 Static library and header files for the 2geom library
 
 %prep
-%autosetup -p1 -a1 -n %{name}-%{version}_2024-10-09_e7c3feb100
+%autosetup -p1 -a1 -n %{name}-%{version}_2025-03-30_93de688d07
 CXXFLAGS="%{optflags} -std=gnu++20" %cmake \
 	-DBUILD_STATIC_LIBS:BOOL=ON \
 	-DBUILD_SHARED_LIBS:BOOL=OFF \
