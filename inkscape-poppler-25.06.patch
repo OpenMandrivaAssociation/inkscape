@@ -1,0 +1,67 @@
+diff -up inkscape-1.4.2_2025-05-08_ebf0e940d0/src/extension/internal/pdfinput/pdf-parser.cpp.omv~ inkscape-1.4.2_2025-05-08_ebf0e940d0/src/extension/internal/pdfinput/pdf-parser.cpp
+--- inkscape-1.4.2_2025-05-08_ebf0e940d0/src/extension/internal/pdfinput/pdf-parser.cpp.omv~	2025-06-05 17:12:14.638918176 +0200
++++ inkscape-1.4.2_2025-05-08_ebf0e940d0/src/extension/internal/pdfinput/pdf-parser.cpp	2025-06-05 17:35:23.586509578 +0200
+@@ -686,7 +686,7 @@ void PdfParser::opSetLineWidth(Object ar
+ void PdfParser::opSetExtGState(Object args[], int /*numArgs*/)
+ {
+     Object obj1, obj2, obj3, obj4, obj5;
+-    Function *funcs[4] = {nullptr, nullptr, nullptr, nullptr};
++    std::vector<std::unique_ptr<Function>> funcs;
+     GfxColor backdropColor;
+     GBool haveBackdropColor = gFalse;
+     GBool alpha = gFalse;
+@@ -749,8 +749,8 @@ void PdfParser::opSetExtGState(Object ar
+         _POPPLER_CALL_ARGS(obj2, obj1.dictLookup, "TR");
+     }
+     if (obj2.isName(const_cast<char *>("Default")) || obj2.isName(const_cast<char *>("Identity"))) {
+-        funcs[0] = funcs[1] = funcs[2] = funcs[3] = nullptr;
+-        state->setTransfer(funcs);
++        funcs.clear();
++        state->setTransfer(std::move(funcs));
+     } else if (obj2.isArray() && obj2.arrayGetLength() == 4) {
+         int pos = 4;
+         for (int i = 0; i < 4; ++i) {
+@@ -763,12 +763,12 @@ void PdfParser::opSetExtGState(Object ar
+         }
+         _POPPLER_FREE(obj3);
+         if (pos == 4) {
+-            state->setTransfer(funcs);
++            state->setTransfer(std::move(funcs));
+         }
+     } else if (obj2.isName() || obj2.isDict() || obj2.isStream()) {
+         if ((funcs[0] = Function::parse(&obj2))) {
+-            funcs[1] = funcs[2] = funcs[3] = nullptr;
+-            state->setTransfer(funcs);
++            funcs.erase(funcs.begin()+1, funcs.end());
++            state->setTransfer(std::move(funcs));
+         }
+     } else if (!obj2.isNull()) {
+         error(errSyntaxError, getPos(), "Invalid transfer function in ExtGState");
+@@ -785,13 +785,12 @@ void PdfParser::opSetExtGState(Object ar
+                 alpha = gFalse;
+             }
+             _POPPLER_FREE(obj3);
+-            funcs[0] = nullptr;
++            funcs.erase(funcs.begin());
+             if (!_POPPLER_CALL_ARGS_DEREF(obj3, obj2.dictLookup, "TR").isNull()) {
+                 funcs[0] = Function::parse(&obj3);
+                 if (funcs[0]->getInputSize() != 1 || funcs[0]->getOutputSize() != 1) {
+                     error(errSyntaxError, getPos(), "Invalid transfer function in soft mask in ExtGState");
+-                    delete funcs[0];
+-                    funcs[0] = nullptr;
++                    funcs.erase(funcs.begin());
+                 }
+             }
+             _POPPLER_FREE(obj3);
+@@ -835,9 +834,9 @@ void PdfParser::opSetExtGState(Object ar
+                             }
+                         }
+                     }
+-                    doSoftMask(&obj3, alpha, blendingColorSpace.get(), isolated, knockout, funcs[0], &backdropColor);
++                    doSoftMask(&obj3, alpha, blendingColorSpace.get(), isolated, knockout, funcs[0].release(), &backdropColor);
+                     if (funcs[0]) {
+-                        delete funcs[0];
++                        funcs.erase(funcs.begin());
+                     }
+                 } else {
+                     error(errSyntaxError, getPos(), "Invalid soft mask in ExtGState - missing group");
