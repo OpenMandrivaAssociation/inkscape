@@ -1,6 +1,6 @@
-diff -up inkscape-1.4.2_2025-05-08_ebf0e940d0/src/extension/internal/pdfinput/pdf-parser.cpp.omv~ inkscape-1.4.2_2025-05-08_ebf0e940d0/src/extension/internal/pdfinput/pdf-parser.cpp
---- inkscape-1.4.2_2025-05-08_ebf0e940d0/src/extension/internal/pdfinput/pdf-parser.cpp.omv~	2025-06-05 17:12:14.638918176 +0200
-+++ inkscape-1.4.2_2025-05-08_ebf0e940d0/src/extension/internal/pdfinput/pdf-parser.cpp	2025-06-05 17:35:23.586509578 +0200
+diff -up inkscape-1.4.2_2025-05-08_ebf0e940d0/src/extension/internal/pdfinput/pdf-parser.cpp.1~ inkscape-1.4.2_2025-05-08_ebf0e940d0/src/extension/internal/pdfinput/pdf-parser.cpp
+--- inkscape-1.4.2_2025-05-08_ebf0e940d0/src/extension/internal/pdfinput/pdf-parser.cpp.1~	2025-04-27 20:26:33.000000000 +0200
++++ inkscape-1.4.2_2025-05-08_ebf0e940d0/src/extension/internal/pdfinput/pdf-parser.cpp	2025-07-10 21:30:35.251331825 +0200
 @@ -686,7 +686,7 @@ void PdfParser::opSetLineWidth(Object ar
  void PdfParser::opSetExtGState(Object args[], int /*numArgs*/)
  {
@@ -65,3 +65,4 @@ diff -up inkscape-1.4.2_2025-05-08_ebf0e940d0/src/extension/internal/pdfinput/pd
                      }
                  } else {
                      error(errSyntaxError, getPos(), "Invalid soft mask in ExtGState - missing group");
+diff -up inkscape-1.4.2_2025-05-08_ebf0e940d0/src/extension/internal/pdfinput/poppler-cairo-font-engine.cpp.1~ inkscape-1.4.2_2025-05-08_ebf0e940d0/src/extension/internal/pdfinput/poppler-cairo-font-engine.cpp

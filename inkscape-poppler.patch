@@ -1,0 +1,19 @@
+diff -up inkscape-1.4.2_2025-05-08_ebf0e940d0/src/extension/internal/pdfinput/poppler-cairo-font-engine.cpp.omv~ inkscape-1.4.2_2025-05-08_ebf0e940d0/src/extension/internal/pdfinput/poppler-cairo-font-engine.cpp
+--- inkscape-1.4.2_2025-05-08_ebf0e940d0/src/extension/internal/pdfinput/poppler-cairo-font-engine.cpp.omv~	2025-07-10 21:39:32.710277516 +0200
++++ inkscape-1.4.2_2025-05-08_ebf0e940d0/src/extension/internal/pdfinput/poppler-cairo-font-engine.cpp	2025-07-10 21:39:46.129561634 +0200
+@@ -322,6 +322,7 @@ CairoFreeTypeFont *CairoFreeTypeFont::cr
+     std::unique_ptr<FoFiType1C> ff1c;
+ #else        
+     FoFiType1C *ff1c;
++#endif
+     std::optional<FreeTypeFontFace> font_face;
+     std::vector<int> codeToGID;
+     bool substitute = false;
+@@ -508,6 +509,7 @@ CairoFreeTypeFont *CairoFreeTypeFont::cr
+                     codeToGID.reserve(n);
+                     codeToGID.insert(codeToGID.begin(), src, src + n);
+                     gfree(src);
++#endif
+ #
+ #if !(POPPLER_CHECK_VERSION(25, 7, 0))
+                     delete ff1c;
