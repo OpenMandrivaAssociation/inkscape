@@ -9,7 +9,7 @@
 Summary:	A vector-based drawing program using SVG
 Name:		inkscape
 Version:	1.4.2
-Release:	7
+Release:	8
 License:	GPLv2+
 Group:		Graphics
 Url:		https://inkscape.org/
@@ -75,6 +75,7 @@ inkscape-poppler-25.06.patch
 https://gitlab.com/inkscape/inkscape/-/commit/ce52c5f96106ae5747171663a46831f21aa52d95.patch
 inkscape-poppler.patch
 https://gitlab.com/inkscape/inkscape/-/merge_requests/7409.patch
+inkscape-poppler-25.11.patch
 
 %description
 Inkscape is a generic SVG-based vector-drawing program.
