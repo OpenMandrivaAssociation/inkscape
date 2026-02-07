@@ -71,6 +71,8 @@ Requires:	python-tinycss2
 Suggests:	uniconvertor
 
 %patchlist
+https://gitlab.com/inkscape/inkscape/-/commit/3a528728ebe33e10bb44d152f47cfedfddbfe18a.patch
+inkscape-poppler-26.02.patch
 
 %description
 Inkscape is a generic SVG-based vector-drawing program.
