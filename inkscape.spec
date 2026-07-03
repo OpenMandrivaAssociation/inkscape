@@ -72,7 +72,7 @@ Suggests:	uniconvertor
 
 %patchlist
 # fix: support for poppler >= 26.05
-https://gitlab.com/inkscape/inkscape/-/commit/98828255aa0c1212329236b3ff4ac7f41efb4a67.patch
+#https://gitlab.com/inkscape/inkscape/-/commit/98828255aa0c1212329236b3ff4ac7f41efb4a67.patch
 # PATCH-FIX-UPSTREAM fix_build_with_poppler_26.06.patch -- Fix support for poppler >= 26.06
 #fix_build_with_poppler_26.06.patch
 poppler-26.06-26.07.patch
