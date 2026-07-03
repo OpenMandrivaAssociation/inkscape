@@ -1,0 +1,573 @@
+diff -uraN inkscape-1.4.4_2026-05-05_dcaf3e7d9e/src/extension/internal/pdfinput/pdf-input.cpp omv-inkscape-1.4.4_2026-05-05_dcaf3e7d9e/src/extension/internal/pdfinput/pdf-input.cpp
+--- inkscape-1.4.4_2026-05-05_dcaf3e7d9e/src/extension/internal/pdfinput/pdf-input.cpp	2026-04-24 00:59:59.000000000 +0200
++++ omv-inkscape-1.4.4_2026-05-05_dcaf3e7d9e/src/extension/internal/pdfinput/pdf-input.cpp	2026-07-03 23:16:22.903052355 +0200
+@@ -28,6 +28,7 @@
+ #include <poppler/PDFDoc.h>
+ #include <poppler/Page.h>
+ #include <poppler/goo/GooString.h>
++#include <optional>
+ 
+ #ifdef HAVE_POPPLER_CAIRO
+ #include <poppler/glib/poppler.h>
+@@ -808,7 +809,11 @@
+     }
+ 
+     // Apply crop settings
++#if POPPLER_CHECK_VERSION(26, 2, 0)
++    std::optional<PDFRectangle> clipToBox;
++#else
+     _POPPLER_CONST PDFRectangle *clipToBox = nullptr;
++#endif
+ 
+     if (crop_to == "media-box") {
+         clipToBox = page->getMediaBox();
+@@ -822,8 +827,16 @@
+         clipToBox = page->getArtBox();
+     }
+ 
++    std::optional<PDFRectangle> cropBox;
++#if POPPLER_CHECK_VERSION(26, 2, 0)
++    cropBox = clipToBox;
++#else
++    if (clipToBox) {
++        cropBox = *clipToBox;
++    }
++#endif
+     // Create parser  (extension/internal/pdfinput/pdf-parser.h)
+-    auto pdf_parser = PdfParser(pdf_doc, builder, page, clipToBox);
++    auto pdf_parser = PdfParser(pdf_doc, builder, page, cropBox);
+ 
+     // Set up approximation precision for parser. Used for converting Mesh Gradients into tiles.
+     if ( color_delta <= 0.0 ) {
+diff -uraN inkscape-1.4.4_2026-05-05_dcaf3e7d9e/src/extension/internal/pdfinput/pdf-parser.cpp omv-inkscape-1.4.4_2026-05-05_dcaf3e7d9e/src/extension/internal/pdfinput/pdf-parser.cpp
+--- inkscape-1.4.4_2026-05-05_dcaf3e7d9e/src/extension/internal/pdfinput/pdf-parser.cpp	2026-04-24 00:59:59.000000000 +0200
++++ omv-inkscape-1.4.4_2026-05-05_dcaf3e7d9e/src/extension/internal/pdfinput/pdf-parser.cpp	2026-07-03 23:16:08.905023122 +0200
+@@ -43,6 +43,7 @@
+ #include <poppler/GlobalParams.h>
+ #include <poppler/Lexer.h>
+ #include <poppler/Object.h>
++#include <poppler/OptionalContent.h>
+ #include <poppler/OutputDev.h>
+ #include <poppler/PDFDoc.h>
+ #include <poppler/Page.h>
+@@ -266,7 +267,7 @@
+ //------------------------------------------------------------------------
+ 
+ PdfParser::PdfParser(std::shared_ptr<PDFDoc> pdf_doc, Inkscape::Extension::Internal::SvgBuilder *builderA, Page *page,
+-                     _POPPLER_CONST PDFRectangle *cropBox)
++                     const std::optional<PDFRectangle> &cropBox)
+     : _pdf_doc(pdf_doc)
+     , xref(pdf_doc->getXRef())
+     , builder(builderA)
+@@ -292,9 +293,15 @@
+     if (page) {
+         // Increment the page building here and set page label
+         Catalog *catalog = pdf_doc->getCatalog();
++#if POPPLER_CHECK_VERSION(26, 7, 0)
++        std::string label;
++        catalog->indexToLabel(page->getNum() - 1, &label);
++        builder->pushPage(getString(label), state);
++#else
+         GooString *label = new GooString("");
+         catalog->indexToLabel(page->getNum() - 1, label);
+         builder->pushPage(getString(label), state);
++#endif
+     }
+ 
+     // Must come after pushPage!
+@@ -307,8 +314,8 @@
+     builder->setMargins(getRect(page->getTrimBox()) * scale,
+                         getRect(page->getArtBox()) * scale,
+                         getRect(page->getBleedBox()) * scale);
+-    if (cropBox && getRect(cropBox) != page_box) {
+-        builder->cropPage(getRect(cropBox) * scale);
++    if (cropBox && getRect(*cropBox) != page_box) {
++        builder->cropPage(getRect(*cropBox) * scale);
+     }
+ 
+     saveState();
+@@ -325,7 +332,7 @@
+     , printCommands(false)
+     , res(new GfxResources(xref, resDict, nullptr))
+     , // start the resource stack
+-    state(new GfxState(72, 72, box, 0, false))
++    state(new _POPPLER_GFX_STATE(72, 72, *box, 0, false))
+     , fontChanged(gFalse)
+     , clip(clipNone)
+     , ignoreUndef(0)
+@@ -817,7 +824,7 @@
+             }
+             _POPPLER_FREE(obj3);
+             if (_POPPLER_CALL_ARGS_DEREF(obj3, obj2.dictLookup, "G").isStream()) {
+-                if (_POPPLER_CALL_ARGS_DEREF(obj4, obj3.streamGetDict()->lookup, "Group").isDict()) {
++                if (_POPPLER_CALL_ARGS_DEREF(obj4, obj3.getStream()->getDict()->lookup, "Group").isDict()) {
+                     std::unique_ptr<GfxColorSpace> blendingColorSpace;
+                     GBool isolated = gFalse;
+                     GBool knockout = gFalse;
+@@ -880,7 +887,7 @@
+   }
+ 
+   // get stream dict
+-  dict = str->streamGetDict();
++  dict = str->getStream()->getDict();
+ 
+   // check form type
+   _POPPLER_CALL_ARGS(obj1, dict->lookup, "FormType");
+@@ -992,7 +999,7 @@
+   state->setFillPattern(nullptr);
+   state->setFillColorSpace(_POPPLER_CONSUME_UNIQPTR_ARG(std::make_unique<GfxDeviceGrayColorSpace>()));
+   color.c[0] = dblToCol(args[0].getNum());
+-  state->setFillColor(&color);
++  state->_POPPLER_SET_FILL_COLOR(color);
+   builder->updateStyle(state);
+ }
+ 
+@@ -1004,7 +1011,7 @@
+   state->setStrokePattern(nullptr);
+   state->setStrokeColorSpace(_POPPLER_CONSUME_UNIQPTR_ARG(std::make_unique<GfxDeviceGrayColorSpace>()));
+   color.c[0] = dblToCol(args[0].getNum());
+-  state->setStrokeColor(&color);
++  state->_POPPLER_SET_STROKE_COLOR(color);
+   builder->updateStyle(state);
+ }
+ 
+@@ -1019,7 +1026,7 @@
+   for (i = 0; i < 4; ++i) {
+     color.c[i] = dblToCol(args[i].getNum());
+   }
+-  state->setFillColor(&color);
++  state->_POPPLER_SET_FILL_COLOR(color);
+   builder->updateStyle(state);
+ }
+ 
+@@ -1033,7 +1040,7 @@
+   for (int i = 0; i < 4; ++i) {
+     color.c[i] = dblToCol(args[i].getNum());
+   }
+-  state->setStrokeColor(&color);
++  state->_POPPLER_SET_STROKE_COLOR(color);
+   builder->updateStyle(state);
+ }
+ 
+@@ -1047,7 +1054,7 @@
+   for (int i = 0; i < 3; ++i) {
+     color.c[i] = dblToCol(args[i].getNum());
+   }
+-  state->setFillColor(&color);
++  state->_POPPLER_SET_FILL_COLOR(color);
+   builder->updateStyle(state);
+ }
+ 
+@@ -1060,7 +1067,7 @@
+   for (int i = 0; i < 3; ++i) {
+     color.c[i] = dblToCol(args[i].getNum());
+   }
+-  state->setStrokeColor(&color);
++  state->_POPPLER_SET_STROKE_COLOR(color);
+   builder->updateStyle(state);
+ }
+ 
+@@ -1076,7 +1083,7 @@
+     GfxColor color;
+     colorSpace->getDefaultColor(&color);
+     state->setFillColorSpace(_POPPLER_CONSUME_UNIQPTR_ARG(colorSpace));
+-    state->setFillColor(&color);
++    state->_POPPLER_SET_FILL_COLOR(color);
+     builder->updateStyle(state);
+   } else {
+     error(errSyntaxError, getPos(), "Bad color space (fill)");
+@@ -1097,7 +1104,7 @@
+     GfxColor color;
+     colorSpace->getDefaultColor(&color);
+     state->setStrokeColorSpace(_POPPLER_CONSUME_UNIQPTR_ARG(colorSpace));
+-    state->setStrokeColor(&color);
++    state->_POPPLER_SET_STROKE_COLOR(color);
+     builder->updateStyle(state);
+   } else {
+     error(errSyntaxError, getPos(), "Bad color space (stroke)");
+@@ -1117,7 +1124,7 @@
+   for (i = 0; i < numArgs; ++i) {
+     color.c[i] = dblToCol(args[i].getNum());
+   }
+-  state->setFillColor(&color);
++  state->_POPPLER_SET_FILL_COLOR(color);
+   builder->updateStyle(state);
+ }
+ 
+@@ -1134,7 +1141,7 @@
+   for (i = 0; i < numArgs; ++i) {
+     color.c[i] = dblToCol(args[i].getNum());
+   }
+-  state->setStrokeColor(&color);
++  state->_POPPLER_SET_STROKE_COLOR(color);
+   builder->updateStyle(state);
+ }
+ 
+@@ -1155,7 +1162,7 @@
+ 	  color.c[i] = dblToCol(args[i].getNum());
+ 	}
+       }
+-      state->setFillColor(&color);
++      state->_POPPLER_SET_FILL_COLOR(color);
+       builder->updateStyle(state);
+     }
+     if (auto pattern = lookupPattern(&(args[numArgs - 1]), state)) {
+@@ -1174,7 +1181,7 @@
+ 	color.c[i] = dblToCol(args[i].getNum());
+       }
+     }
+-    state->setFillColor(&color);
++    state->_POPPLER_SET_FILL_COLOR(color);
+     builder->updateStyle(state);
+   }
+ }
+@@ -1198,7 +1205,7 @@
+ 	  color.c[i] = dblToCol(args[i].getNum());
+ 	}
+       }
+-      state->setStrokeColor(&color);
++      state->_POPPLER_SET_STROKE_COLOR(color);
+       builder->updateStyle(state);
+     }
+     if (auto pattern = lookupPattern(&(args[numArgs - 1]), state)) {
+@@ -1217,7 +1224,7 @@
+ 	color.c[i] = dblToCol(args[i].getNum());
+       }
+     }
+-    state->setStrokeColor(&color);
++    state->_POPPLER_SET_STROKE_COLOR(color);
+     builder->updateStyle(state);
+   }
+ }
+@@ -1700,7 +1707,7 @@
+ 
+     // use the center color
+     shading->getColor(xM, yM, &fillColor);
+-    state->setFillColor(&fillColor);
++    state->_POPPLER_SET_FILL_COLOR(fillColor);
+ 
+     // fill the rectangle
+     state->moveTo(x0 * matrix[0] + y0 * matrix[2] + matrix[4],
+@@ -1799,7 +1806,7 @@
+     }
+   }
+   if (i == nComps || depth == maxDepths[pdfGouraudTriangleShading-1]) {
+-    state->setFillColor(color0);
++    state->_POPPLER_SET_FILL_COLOR(*color0);
+     state->moveTo(x0, y0);
+     state->lineTo(x1, y1);
+     state->lineTo(x2, y2);
+@@ -1877,7 +1884,7 @@
+     color.c[i] = GfxColorComp(patch->color[0][0].c[i]);
+   }
+   if (i == nComps || depth == maxDepths[pdfPatchMeshShading-1]) {
+-    state->setFillColor(&color);
++    state->_POPPLER_SET_FILL_COLOR(color);
+     state->moveTo(patch->x[0][0], patch->y[0][0]);
+     state->curveTo(patch->x[0][1], patch->y[0][1],
+ 		   patch->x[0][2], patch->y[0][2],
+diff -uraN inkscape-1.4.4_2026-05-05_dcaf3e7d9e/src/extension/internal/pdfinput/pdf-parser.h omv-inkscape-1.4.4_2026-05-05_dcaf3e7d9e/src/extension/internal/pdfinput/pdf-parser.h
+--- inkscape-1.4.4_2026-05-05_dcaf3e7d9e/src/extension/internal/pdfinput/pdf-parser.h	2026-04-24 00:59:59.000000000 +0200
++++ omv-inkscape-1.4.4_2026-05-05_dcaf3e7d9e/src/extension/internal/pdfinput/pdf-parser.h	2026-07-03 23:15:49.077398484 +0200
+@@ -29,6 +29,7 @@
+ #include <glib/poppler-features.h>
+ #include <map>
+ #include <memory>
++#include <optional>
+ #include <poppler/Object.h>
+ #include <string>
+ 
+@@ -112,8 +113,8 @@
+ class PdfParser {
+ public:
+ 
+-  // Constructor for regular output.
+-    PdfParser(std::shared_ptr<PDFDoc> pdf_doc, SvgBuilder *builderA, Page *page, _POPPLER_CONST PDFRectangle *cropBox);
++    // Constructor for regular output.
++    PdfParser(std::shared_ptr<PDFDoc> pdf_doc, SvgBuilder *builderA, Page *page, const std::optional<PDFRectangle> &cropBox);
+     // Constructor for a sub-page object.
+     PdfParser(XRef *xrefA, SvgBuilder *builderA, Dict *resDict, _POPPLER_CONST PDFRectangle *box);
+ 
+diff -uraN inkscape-1.4.4_2026-05-05_dcaf3e7d9e/src/extension/internal/pdfinput/pdf-utils.cpp omv-inkscape-1.4.4_2026-05-05_dcaf3e7d9e/src/extension/internal/pdfinput/pdf-utils.cpp
+--- inkscape-1.4.4_2026-05-05_dcaf3e7d9e/src/extension/internal/pdfinput/pdf-utils.cpp	2025-12-13 01:49:29.000000000 +0100
++++ omv-inkscape-1.4.4_2026-05-05_dcaf3e7d9e/src/extension/internal/pdfinput/pdf-utils.cpp	2026-07-03 23:15:40.450996977 +0200
+@@ -133,6 +133,11 @@
+     return Geom::Rect(box->x1, box->y1, box->x2, box->y2);
+ }
+ 
++Geom::Rect getRect(_POPPLER_CONST PDFRectangle &box)
++{
++    return Geom::Rect(box.x1, box.y1, box.x2, box.y2);
++}
++
+ Geom::PathVector getPathV(GfxPath *path) 
+ {
+     if (!path) {
+diff -uraN inkscape-1.4.4_2026-05-05_dcaf3e7d9e/src/extension/internal/pdfinput/pdf-utils.h omv-inkscape-1.4.4_2026-05-05_dcaf3e7d9e/src/extension/internal/pdfinput/pdf-utils.h
+--- inkscape-1.4.4_2026-05-05_dcaf3e7d9e/src/extension/internal/pdfinput/pdf-utils.h	2025-12-13 01:49:29.000000000 +0100
++++ omv-inkscape-1.4.4_2026-05-05_dcaf3e7d9e/src/extension/internal/pdfinput/pdf-utils.h	2026-07-03 23:15:32.125574658 +0200
+@@ -59,6 +59,7 @@
+ };
+ 
+ Geom::Rect getRect(_POPPLER_CONST PDFRectangle *box);
++Geom::Rect getRect(_POPPLER_CONST PDFRectangle &box);
+ Geom::PathVector getPathV(GfxPath *gPath);
+ 
+ #endif /* PDF_UTILS_H */
+diff -uraN inkscape-1.4.4_2026-05-05_dcaf3e7d9e/src/extension/internal/pdfinput/poppler-cairo-font-engine.cpp omv-inkscape-1.4.4_2026-05-05_dcaf3e7d9e/src/extension/internal/pdfinput/poppler-cairo-font-engine.cpp
+--- inkscape-1.4.4_2026-05-05_dcaf3e7d9e/src/extension/internal/pdfinput/poppler-cairo-font-engine.cpp	2025-12-13 01:49:29.000000000 +0100
++++ omv-inkscape-1.4.4_2026-05-05_dcaf3e7d9e/src/extension/internal/pdfinput/poppler-cairo-font-engine.cpp	2026-07-03 23:16:46.813394570 +0200
+@@ -313,7 +313,11 @@
+ #else
+     GfxFontLoc *fontLoc;
+ #endif
++#if POPPLER_CHECK_VERSION(26, 5, 0)
++    const char * const *enc;
++#else
+     char **enc;
++#endif
+     const char *name;
+ #if POPPLER_CHECK_VERSION(25, 7, 0)
+     std::unique_ptr<FoFiType1C> ff1c;
+@@ -385,7 +389,11 @@
+                 goto err2;
+             }
+ 
++#if POPPLER_CHECK_VERSION(26, 5, 0)
++            enc = gfx8bit->getEncoding().data();
++#else
+             enc = gfx8bit->getEncoding();
++#endif
+ 
+             codeToGID.resize(256);
+             for (i = 0; i < 256; ++i) {
+@@ -677,7 +685,7 @@
+ #endif
+ 
+     std::vector<int> codeToGID;
+-    char *name;
++    const char *name;
+ 
+     Dict *charProcs = gfx8bit->getCharProcs();
+     Ref ref = *gfxFont->getID();
+@@ -694,13 +702,17 @@
+ 
+     cairo_font_face_set_user_data(font_face, &type3_font_key, (void *)info, _free_type3_font_info);
+ 
++#if POPPLER_CHECK_VERSION(26, 5, 0)
++    const char * const *enc = gfx8bit->getEncoding().data();
++#else
+     char **enc = gfx8bit->getEncoding();
++#endif
+     codeToGID.resize(256);
+     for (int i = 0; i < 256; ++i) {
+         codeToGID[i] = 0;
+         if (charProcs && (name = enc[i])) {
+             for (int j = 0; j < charProcs->getLength(); j++) {
+-                if (strcmp(name, charProcs->getKey(j)) == 0) {
++                if (std::string(charProcs->getKey(j)).compare(name) == 0) {
+                     codeToGID[i] = j;
+                 }
+             }
+diff -uraN inkscape-1.4.4_2026-05-05_dcaf3e7d9e/src/extension/internal/pdfinput/poppler-transition-api.h omv-inkscape-1.4.4_2026-05-05_dcaf3e7d9e/src/extension/internal/pdfinput/poppler-transition-api.h
+--- inkscape-1.4.4_2026-05-05_dcaf3e7d9e/src/extension/internal/pdfinput/poppler-transition-api.h	2026-04-24 00:59:59.000000000 +0200
++++ omv-inkscape-1.4.4_2026-05-05_dcaf3e7d9e/src/extension/internal/pdfinput/poppler-transition-api.h	2026-07-03 23:15:23.601166219 +0200
+@@ -15,6 +15,22 @@
+ #include <glib/poppler-features.h>
+ #include <poppler/UTF.h>
+ 
++#if POPPLER_CHECK_VERSION(26, 6, 0)
++#define _POPPLER_GET_GRAY(color, gray) getGray(color, gray)
++#define _POPPLER_GET_RGB(color, rgb) getRGB(color, rgb)
++#define _POPPLER_GET_CMYK(color, cmyk) getCMYK(color, cmyk)
++#define _POPPLER_SET_FILL_COLOR(color) setFillColor(color)
++#define _POPPLER_SET_STROKE_COLOR(color) setStrokeColor(color)
++#define _POPPLER_GFX_STATE(h, v, Rect, rotateA, upsideDown) GfxState(h, v, Rect, rotateA, upsideDown)
++#else
++#define _POPPLER_GET_GRAY(color, gray) getGray(&color, gray)
++#define _POPPLER_GET_RGB(color, rgb) getRGB(&color, rgb)
++#define _POPPLER_GET_CMYK(color, cmyk) getCMYK(&color, cmyk)
++#define _POPPLER_SET_FILL_COLOR(color) setFillColor(&color)
++#define _POPPLER_SET_STROKE_COLOR(color) setStrokeColor(&color)
++#define _POPPLER_GFX_STATE(h, v, Rect, rotateA, upsideDown) GfxState(h, v, &Rect, rotateA, upsideDown)
++#endif
++
+ #if POPPLER_CHECK_VERSION(26, 2, 0)
+ #define _POPPLER_WMODE GfxFont::WritingMode
+ #define _POPPLER_WMODE_HORIZONTAL GfxFont::WritingMode::Horizontal
+diff -uraN inkscape-1.4.4_2026-05-05_dcaf3e7d9e/src/extension/internal/pdfinput/poppler-utils.cpp omv-inkscape-1.4.4_2026-05-05_dcaf3e7d9e/src/extension/internal/pdfinput/poppler-utils.cpp
+--- inkscape-1.4.4_2026-05-05_dcaf3e7d9e/src/extension/internal/pdfinput/poppler-utils.cpp	2026-04-24 00:59:59.000000000 +0200
++++ omv-inkscape-1.4.4_2026-05-05_dcaf3e7d9e/src/extension/internal/pdfinput/poppler-utils.cpp	2026-07-03 23:17:02.841283577 +0200
+@@ -13,9 +13,12 @@
+ #include "poppler-utils.h"
+ 
+ #include <2geom/affine.h>
++#include <poppler/Array.h>
++#include <poppler/Dict.h>
+ #include <poppler/GfxFont.h>
+ #include <poppler/GfxState.h>
+ #include <poppler/PDFDoc.h>
++#include <poppler/Stream.h>
+ #include <poppler/UTF.h>
+ 
+ #include "libnrtype/font-factory.h"
+@@ -191,19 +194,21 @@
+             n = obj->arrayGetLength();
+             h->hash((char *)&n, sizeof(int));
+             for (i = 0; i < n; ++i) {
+-                const Object &obj2 = obj->arrayGetNF(i);
++                const Object &obj2 = obj->getArray()->getNF(i);
+                 hashFontObject1(&obj2, h);
+             }
+             break;
+-        case objDict:
+-            h->hash('d');
+-            n = obj->dictGetLength();
+-            h->hash((char *)&n, sizeof(int));
+-            for (i = 0; i < n; ++i) {
+-                p = obj->dictGetKey(i);
+-                h->hash(p, (int)strlen(p));
+-                const Object &obj2 = obj->dictGetValNF(i);
+-                hashFontObject1(&obj2, h);
++        case objDict: {
++                h->hash('d');
++                auto objdict = obj->getDict();
++                n = objdict->getLength();
++                h->hash((char *)&n, sizeof(int));
++                for (i = 0; i < n; ++i) {
++                    auto p = std::string(objdict->getKey(i));
++                    h->hash(p.c_str(), p.length());
++                    const Object &obj2 = objdict->getValNF(i);
++                    hashFontObject1(&obj2, h);
++                }
+             }
+             break;
+         case objStream:
+@@ -543,7 +548,7 @@
+                 continue;
+ 
+             Ref resourcesRef;
+-            const Object resObj = obj2.streamGetDict()->lookup("Resources", &resourcesRef);
++            const Object resObj = obj2.getStream()->getDict()->lookup("Resources", &resourcesRef);
+             if (resourcesRef != Ref::INVALID() && !visitedObjects.insert(resourcesRef.num).second)
+                 continue;
+ 
+diff -uraN inkscape-1.4.4_2026-05-05_dcaf3e7d9e/src/extension/internal/pdfinput/svg-builder.cpp omv-inkscape-1.4.4_2026-05-05_dcaf3e7d9e/src/extension/internal/pdfinput/svg-builder.cpp
+--- inkscape-1.4.4_2026-05-05_dcaf3e7d9e/src/extension/internal/pdfinput/svg-builder.cpp	2026-04-24 00:59:59.000000000 +0200
++++ omv-inkscape-1.4.4_2026-05-05_dcaf3e7d9e/src/extension/internal/pdfinput/svg-builder.cpp	2026-07-03 23:18:13.563383854 +0200
+@@ -384,6 +384,7 @@
+     return (gchar *)&tmp;
+ }
+ 
++// for poppler < 26.06.0
+ static std::string svgConvertGfxRGB(GfxRGB *color)
+ {
+     double r = (double)color->r / 65535.0;
+@@ -394,6 +395,14 @@
+ 
+ std::string SvgBuilder::convertGfxColor(const GfxColor *color, GfxColorSpace *space)
+ {
++    if (!color) {
++        return "";
++    }
++    return convertGfxColor(*color, space);
++}
++
++std::string SvgBuilder::convertGfxColor(const GfxColor &color, GfxColorSpace *space)
++{
+     std::string icc = "";
+     switch (space->getMode()) {
+         case csDeviceGray:
+@@ -412,14 +421,14 @@
+     }
+ 
+     GfxRGB rgb;
+-    space->getRGB(color, &rgb);
++    space->_POPPLER_GET_RGB(color, &rgb);
+     auto rgb_color = svgConvertGfxRGB(&rgb);
+ 
+     if (!icc.empty()) {
+         Inkscape::CSSOStringStream icc_color;
+         icc_color << rgb_color << " icc-color(" << icc;
+         for (int i = 0; i < space->getNComps(); ++i) {
+-            icc_color << ", " << colToDbl((*color).c[i]);
++            icc_color << ", " << colToDbl((color).c[i]);
+         }
+         icc_color << ");";
+         return icc_color.str();
+@@ -1204,7 +1213,7 @@
+ /**
+  * \brief Adds a stop with the given properties to the gradient's representation
+  */
+-void SvgBuilder::_addStopToGradient(Inkscape::XML::Node *gradient, double offset, GfxColor *color, GfxColorSpace *space,
++void SvgBuilder::_addStopToGradient(Inkscape::XML::Node *gradient, double offset, GfxColor &color, GfxColorSpace *space,
+                                     double opacity)
+ {
+     Inkscape::XML::Node *stop = _xml_doc->createElement("svg:stop");
+@@ -1214,7 +1223,7 @@
+     if (space->getMode() == csDeviceGray) {
+         // This is a transparency mask.
+         GfxRGB rgb;
+-        space->getRGB(color, &rgb);
++        space->_POPPLER_GET_RGB(color, &rgb);
+         double gray = (double)rgb.r / 65535.0;
+         gray = CLAMP(gray, 0.0, 1.0);
+         os_opacity << gray;
+@@ -1255,8 +1264,8 @@
+         if (!svgGetShadingColor(shading, 0.0, &stop1) || !svgGetShadingColor(shading, 1.0, &stop2)) {
+             return false;
+         } else {
+-            _addStopToGradient(gradient, 0.0, &stop1, space, 1.0);
+-            _addStopToGradient(gradient, 1.0, &stop2, space, 1.0);
++            _addStopToGradient(gradient, 0.0, stop1, space, 1.0);
++            _addStopToGradient(gradient, 1.0, stop2, space, 1.0);
+         }
+     } else if (type == _POPPLER_FUNCTION_TYPE_STITCHING) {
+         auto stitchingFunc = static_cast<_POPPLER_CONST StitchingFunction*>(func);
+@@ -1269,7 +1278,7 @@
+         // Add stops from all the stitched functions
+         GfxColor prev_color, color;
+         svgGetShadingColor(shading, bounds[0], &prev_color);
+-        _addStopToGradient(gradient, bounds[0], &prev_color, space, 1.0);
++        _addStopToGradient(gradient, bounds[0], prev_color, space, 1.0);
+         for ( int i = 0 ; i < num_funcs ; i++ ) {
+             svgGetShadingColor(shading, bounds[i + 1], &color);
+             // Add stops
+@@ -1279,14 +1288,14 @@
+                     expE = (bounds[i + 1] - bounds[i])/expE;    // approximate exponential as a single straight line at x=1
+                     if (encode[2*i] == 0) {    // normal sequence
+                         auto offset = (bounds[i + 1] - expE) / max_bound;
+-                        _addStopToGradient(gradient, offset, &prev_color, space, 1.0);
++                        _addStopToGradient(gradient, offset, prev_color, space, 1.0);
+                     } else {                   // reflected sequence
+                         auto offset = (bounds[i] + expE) / max_bound;
+-                        _addStopToGradient(gradient, offset, &color, space, 1.0);
++                        _addStopToGradient(gradient, offset, color, space, 1.0);
+                     }
+                 }
+             }
+-            _addStopToGradient(gradient, bounds[i + 1] / max_bound, &color, space, 1.0);
++            _addStopToGradient(gradient, bounds[i + 1] / max_bound, color, space, 1.0);
+             prev_color = color;
+         }
+     } else { // Unsupported function type
+diff -uraN inkscape-1.4.4_2026-05-05_dcaf3e7d9e/src/extension/internal/pdfinput/svg-builder.h omv-inkscape-1.4.4_2026-05-05_dcaf3e7d9e/src/extension/internal/pdfinput/svg-builder.h
+--- inkscape-1.4.4_2026-05-05_dcaf3e7d9e/src/extension/internal/pdfinput/svg-builder.h	2025-12-13 01:49:29.000000000 +0100
++++ omv-inkscape-1.4.4_2026-05-05_dcaf3e7d9e/src/extension/internal/pdfinput/svg-builder.h	2026-07-03 23:17:26.653633389 +0200
+@@ -186,7 +186,7 @@
+     // Pattern creation
+     gchar *_createPattern(GfxPattern *pattern, GfxState *state, bool is_stroke=false);
+     gchar *_createGradient(GfxShading *shading, const Geom::Affine pat_matrix, bool for_shading = false);
+-    void _addStopToGradient(Inkscape::XML::Node *gradient, double offset, GfxColor *color, GfxColorSpace *space,
++    void _addStopToGradient(Inkscape::XML::Node *gradient, double offset, GfxColor &color, GfxColorSpace *space,
+                             double opacity);
+     bool _addGradientStops(Inkscape::XML::Node *gradient, GfxShading *shading,
+                            _POPPLER_CONST Function *func);
+@@ -239,6 +239,7 @@
+     static bool _attrEqual(Inkscape::XML::Node *a, Inkscape::XML::Node *b, char const *attr);
+ 
+     // Colors
++    std::string convertGfxColor(const GfxColor &color, GfxColorSpace *space);
+     std::string convertGfxColor(const GfxColor *color, GfxColorSpace *space);
+     std::string _getColorProfile(cmsHPROFILE hp);
+ 
