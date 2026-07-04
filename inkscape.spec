@@ -75,6 +75,8 @@ Suggests:	uniconvertor
 https://gitlab.com/inkscape/inkscape/-/commit/98828255aa0c1212329236b3ff4ac7f41efb4a67.patch
 # PATCH-FIX-UPSTREAM fix_build_with_poppler_26.06.patch -- Fix support for poppler >= 26.06
 fix_build_with_poppler_26.06.patch
+# PATCH-FIX-UPSTREAM fix_build_with_poppler_26.07.patch -- Fix support for poppler >= 26.07
+fix_build_with_poppler_26.07.patch
 
 %description
 Inkscape is a generic SVG-based vector-drawing program.
